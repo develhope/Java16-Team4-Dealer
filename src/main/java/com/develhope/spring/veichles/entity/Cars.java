@@ -1,8 +1,7 @@
-package com.develhope.spring.entities.veichles;
+package com.develhope.spring.veichles.entity;
 
 import jakarta.persistence.Entity;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 

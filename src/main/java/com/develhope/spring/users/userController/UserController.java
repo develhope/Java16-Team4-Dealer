@@ -1,4 +1,4 @@
-package com.develhope.spring.controllers;
+package com.develhope.spring.users.userController;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
