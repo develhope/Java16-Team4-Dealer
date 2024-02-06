@@ -1,6 +1,6 @@
-package com.develhope.spring.service;
+package com.develhope.spring.transazioni.service;
 
-import com.develhope.spring.repository.NoleggioRepo;
+import com.develhope.spring.transazioni.repository.NoleggioRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

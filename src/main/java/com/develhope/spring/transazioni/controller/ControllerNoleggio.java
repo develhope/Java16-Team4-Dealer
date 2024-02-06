@@ -1,6 +1,6 @@
-package com.develhope.spring.controller;
+package com.develhope.spring.transazioni.controller;
 
-import com.develhope.spring.service.NoleggioService;
+import com.develhope.spring.transazioni.service.NoleggioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
