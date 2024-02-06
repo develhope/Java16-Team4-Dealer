@@ -1,6 +1,6 @@
 package com.develhope.spring.users.entity;
 
-public enum UserType {
+public enum TipoUtente {
         ADMIN,
         VENDOR,
         CUSTOMER
