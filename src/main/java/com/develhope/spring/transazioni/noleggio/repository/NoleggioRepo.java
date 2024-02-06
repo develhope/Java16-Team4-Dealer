@@ -1,6 +1,6 @@
-package com.develhope.spring.transazioni.repository;
+package com.develhope.spring.transazioni.noleggio.repository;
 
-import com.develhope.spring.transazioni.Noleggio;
+import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

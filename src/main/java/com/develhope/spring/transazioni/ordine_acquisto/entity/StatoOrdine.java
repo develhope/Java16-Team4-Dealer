@@ -1,4 +1,4 @@
-package com.develhope.spring.transazioni;
+package com.develhope.spring.transazioni.ordine_acquisto.entity;
 
 public enum StatoOrdine {
     ORDINATO,

@@ -1,4 +1,4 @@
-package com.develhope.spring.transazioni;
+package com.develhope.spring.transazioni.ordine_acquisto.entity;
 
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.veichles.entity.Auto;

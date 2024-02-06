@@ -1,4 +1,4 @@
-package com.develhope.spring.transazioni;
+package com.develhope.spring.transazioni.noleggio.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
