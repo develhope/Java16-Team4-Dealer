@@ -18,7 +18,7 @@ public class AutoService {
 
     public Veicolo getById(long id) {
         Optional<Veicolo> veicolo = this.autoRepo.findById(id);
-        if (veicolo.isEmpty()) return new Veicolo();
+        if (veicolo.isEmpty()) return null;
         return veicolo.get();
     }
 
@@ -51,6 +51,17 @@ public class AutoService {
         v.setSconto(v.getSconto());
         return v;
 
+    }
+
+    public boolean deleteVeicoloById(long id){
+        Veicolo  v = getById(id);
+        if (v==null)return false;
+        this.autoRepo.deleteById(id);
+        return true;
+    }
+    public boolean deleteVeicolo(Veicolo veicolo){
+        this.autoRepo.delete(veicolo);
+        return true;
     }
 
 
