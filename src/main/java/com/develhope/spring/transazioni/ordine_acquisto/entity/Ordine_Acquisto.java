@@ -1,7 +1,7 @@
 package com.develhope.spring.transazioni.ordine_acquisto.entity;
 
 import com.develhope.spring.users.entity.Utente;
-import com.develhope.spring.veichles.entity.Auto;
+import com.develhope.spring.veichles.entity.Veicolo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +22,7 @@ public class Ordine_Acquisto {
     private Long id;
     private BigDecimal anticipo;
     private boolean pagato;
-    private Auto auto;
+    private Veicolo auto;
     private Utente customer;
     private Utente vendor;
     private StatoOrdine statoOrdine;
