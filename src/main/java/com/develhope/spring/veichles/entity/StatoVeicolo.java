@@ -1,6 +1,6 @@
 package com.develhope.spring.veichles.entity;
 
-public enum StatoAuto {
+public enum StatoVeicolo {
     ORDINABILE,
     ACQUISTABILE,
     NON_DISPONBILE

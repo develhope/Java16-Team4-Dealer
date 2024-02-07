@@ -14,11 +14,12 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Auto {
+public class Veicolo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private TipoVeicolo tipoVeicolo;
     private String marca;
     private String modello;
     private int cilindrata;
