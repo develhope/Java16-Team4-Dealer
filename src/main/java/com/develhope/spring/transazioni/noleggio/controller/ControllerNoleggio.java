@@ -17,62 +17,31 @@ public class ControllerNoleggio {
     @Autowired
     private NoleggioService noleggioService;
 
-    @Autowired
-    private NoleggioRepo noleggioRepo;
 
 
     @PostMapping("/create")
-    public Noleggio createStudent(@RequestBody Noleggio noleggio) {
-        return noleggioRepo.save(noleggio);
+    public Noleggio createNoleggio(@RequestBody Noleggio noleggio) {
+        return noleggioService.createNoleggio(noleggio);
     }
 
     @GetMapping("/getList")
     public List<Noleggio> getAll() {
-        return noleggioRepo.findAll();
+        return noleggioService.getAll();
     }
 
     @GetMapping("/get/{id}")
     public Noleggio getNoleggioById(@PathVariable Long id) {
-        Optional<Noleggio> optionalNoleggio = noleggioRepo.findById(id);
-        if (optionalNoleggio.isPresent()) {
-            return optionalNoleggio.get();
-        } else {
-            return null;
-        }
+        return noleggioService.getNoleggioById(id);
+
     }
     @DeleteMapping("delete/{id}")
     public void deleteNoleggio(@PathVariable Long id) {
-        noleggioRepo.deleteById(id);
+        noleggioService.deleteNoleggio(id);
     }
 
 
     @PatchMapping("/update/{id}")
     public Noleggio updateNoleggio(@PathVariable Long id, @RequestBody Noleggio noleggio) {
-        Noleggio existingNoleggio = noleggioService.findNoleggioById(id);
-
-        if (existingNoleggio == null) {
-            throw new EntityNotFoundException("Noleggio non trovato con ID: " + id);
-        }
-
-        if (noleggio.getDataInizio() != null) {
-            existingNoleggio.setDataInizio(noleggio.getDataInizio());
-        }
-
-        if (noleggio.getDataFine() != null) {
-            existingNoleggio.setDataFine(noleggio.getDataFine());
-        }
-
-        if (noleggio.getCostoGiornaliero() != null) {
-            existingNoleggio.setCostoGiornaliero(noleggio.getCostoGiornaliero());
-        }
-
-        if (noleggio.getCostoTotale() != null) {
-            existingNoleggio.setCostoTotale(noleggio.getCostoTotale());
-        }
-
-        existingNoleggio.setPagato(noleggio.isPagato());
-        existingNoleggio.setNoleggiato(noleggio.isNoleggiato());
-
-        return noleggioRepo.save(existingNoleggio);
+        return noleggioService.updateNoleggio(id, noleggio);
     }
 }
