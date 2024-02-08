@@ -27,4 +27,3 @@ public class Utente {
     private String password;
 }
 
-
