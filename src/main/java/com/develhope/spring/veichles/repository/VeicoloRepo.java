@@ -18,7 +18,7 @@ public interface VeicoloRepo extends JpaRepository <Veicolo,Long> {
     List<Veicolo> findAllByModello(String modello);
     List<Veicolo> findAllByCilindrata(int cilindrata);
     List<Veicolo> findAllByColore(String colore);
-    List<Veicolo> findAllByMarca(int potenza);
+    List<Veicolo> findAllByPotenza(int potenza);
     List<Veicolo> findAllByTipoDiCambio(String tipoDiCambio);
     List<Veicolo> findAllByAnnoImmatricolazione(OffsetDateTime annoImmatricolazione);
 
