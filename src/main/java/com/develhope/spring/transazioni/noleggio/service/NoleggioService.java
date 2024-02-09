@@ -4,7 +4,9 @@ import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
@@ -23,11 +25,11 @@ public class NoleggioService {
         if (optionalNoleggio.isPresent()) {
             return optionalNoleggio.get();
         } else {
-            throw new EntityNotFoundException("Noleggio non trovato con ID: " + id);
-        }
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND , "Noleggio non trovato con ID: " + id);        }
     }
 
     public Noleggio createNoleggio(Noleggio noleggio) {
+
         return noleggioRepo.save(noleggio);
     }
 
@@ -36,46 +38,42 @@ public class NoleggioService {
         return noleggioRepo.findAll();
     }
 
-    public Noleggio getNoleggioById(long id) {
-        Optional<Noleggio> optionalNoleggio = noleggioRepo.findById(id);
-        if (optionalNoleggio.isPresent()) {
-            return optionalNoleggio.get();
-        } else {
-            return null;
-        }
-    }
-    public void deleteNoleggio(long id) {
-        noleggioRepo.deleteById(id);
+
+    public String deleteNoleggio(long id) {
+            Noleggio existingNoleggio = findNoleggioById(id);
+            noleggioRepo.delete(existingNoleggio);
+            return "Noleggio eliminato correttamente";
     }
 
 
     public Noleggio updateNoleggio(long id, Noleggio noleggio) {
-        Noleggio existingNoleggio = findNoleggioById(id);
+        try {
+            Noleggio existingNoleggio = findNoleggioById(id);
 
-        if (existingNoleggio == null) {
-            throw new EntityNotFoundException("Noleggio non trovato con ID: " + id);
+            if (noleggio.getDataInizio() != null) {
+                existingNoleggio.setDataInizio(noleggio.getDataInizio());
+            }
+
+            if (noleggio.getDataFine() != null) {
+                existingNoleggio.setDataFine(noleggio.getDataFine());
+            }
+
+            if (noleggio.getCostoGiornaliero() != null) {
+                existingNoleggio.setCostoGiornaliero(noleggio.getCostoGiornaliero());
+            }
+
+            if (noleggio.getCostoTotale() != null) {
+                existingNoleggio.setCostoTotale(noleggio.getCostoTotale());
+            }
+
+            existingNoleggio.setPagato(noleggio.isPagato());
+            existingNoleggio.setNoleggiato(noleggio.isNoleggiato());
+
+            return noleggioRepo.save(existingNoleggio);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante l'aggiornamento del noleggio", e);
         }
-
-        if (noleggio.getDataInizio() != null) {
-            existingNoleggio.setDataInizio(noleggio.getDataInizio());
-        }
-
-        if (noleggio.getDataFine() != null) {
-            existingNoleggio.setDataFine(noleggio.getDataFine());
-        }
-
-        if (noleggio.getCostoGiornaliero() != null) {
-            existingNoleggio.setCostoGiornaliero(noleggio.getCostoGiornaliero());
-        }
-
-        if (noleggio.getCostoTotale() != null) {
-            existingNoleggio.setCostoTotale(noleggio.getCostoTotale());
-        }
-
-        existingNoleggio.setPagato(noleggio.isPagato());
-        existingNoleggio.setNoleggiato(noleggio.isNoleggiato());
-
-        return noleggioRepo.save(existingNoleggio);
     }
 
 

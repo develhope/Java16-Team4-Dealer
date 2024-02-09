@@ -16,8 +16,8 @@ public class Noleggio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private OffsetDateTime dataInizio;
-    private OffsetDateTime dataFine;
+    private String dataInizio;
+    private String dataFine;
     private BigDecimal costoGiornaliero;
     private BigDecimal costoTotale;
     private boolean pagato;

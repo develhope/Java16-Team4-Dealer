@@ -31,12 +31,12 @@ public class ControllerNoleggio {
 
     @GetMapping("/get/{id}")
     public Noleggio getNoleggioById(@PathVariable Long id) {
-        return noleggioService.getNoleggioById(id);
+        return noleggioService.findNoleggioById(id);
 
     }
-    @DeleteMapping("delete/{id}")
-    public void deleteNoleggio(@PathVariable Long id) {
-        noleggioService.deleteNoleggio(id);
+    @DeleteMapping("/delete/{id}")
+    public String deleteNoleggio(@PathVariable Long id) {
+        return noleggioService.deleteNoleggio(id);
     }
 
 
