@@ -5,8 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 
+@Component
 @Entity
 @Data
 @AllArgsConstructor

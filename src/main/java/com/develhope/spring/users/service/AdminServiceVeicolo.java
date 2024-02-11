@@ -1,6 +1,5 @@
 package com.develhope.spring.users.service;
 
-import com.develhope.spring.users.repository.UtenteRepo;
 import com.develhope.spring.veichles.entity.TipoVeicolo;
 import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AdminService {
+public class AdminServiceVeicolo {
 
 
     @Autowired
@@ -41,6 +40,7 @@ public class AdminService {
         if (veicoloEsistenteOptional.isPresent()) {
 
             Veicolo veicoloEsistente = veicoloEsistenteOptional.get();
+            veicoloEsistente.setTipoVeicolo(veicoloModificato.getTipoVeicolo());
             veicoloEsistente.setMarca(veicoloModificato.getMarca());
             veicoloEsistente.setModello(veicoloModificato.getModello());
             veicoloEsistente.setCilindrata(veicoloModificato.getCilindrata());
@@ -54,8 +54,9 @@ public class AdminService {
 
             return veicoloRepo.save(veicoloEsistente);
         } else {
-            return null; // Veicolo non trovato
+            return null;
         }
     }
+
 
 }

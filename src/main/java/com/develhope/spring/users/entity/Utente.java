@@ -2,7 +2,9 @@ package com.develhope.spring.users.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
+@Component
 @Entity
 @Data
 @Table
@@ -15,15 +17,17 @@ public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "firstName",nullable = false)
+    @Column(name = "firstName", nullable = false)
     private String firstName;
-    @Column(name = "lastName",nullable = false)
+    @Column(name = "lastName", nullable = false)
     private String lastName;
-    @Column(name = "phoneNumber",nullable = false)
+    @Column(name = "phoneNumber", nullable = false)
     private int phoneNumber;
-    @Column(name = "email",nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "TipoUtente", nullable = false)
+    private TipoUtente tipoUtente;
 }
 
