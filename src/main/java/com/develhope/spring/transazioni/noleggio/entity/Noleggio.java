@@ -3,10 +3,12 @@ package com.develhope.spring.transazioni.noleggio.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+@Component
 @Entity
 @Data
 @AllArgsConstructor
