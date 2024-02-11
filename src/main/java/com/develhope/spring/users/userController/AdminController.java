@@ -1,9 +1,12 @@
 package com.develhope.spring.users.userController;
 
+import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
+import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.users.service.AdminServiceOrdine;
 import com.develhope.spring.users.service.AdminServiceVeicolo;
+import com.develhope.spring.users.service.AdminServicesNoleggio;
 import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,13 @@ public class AdminController {
     private AdminServiceOrdine adminServiceOrdine;
     @Autowired
     Utente utente;
+
+    @Autowired
+    Noleggio noleggio;
+    @Autowired
+    NoleggioRepo noleggioRepo;
+    @Autowired
+    AdminServicesNoleggio adminServicesNoleggio;
 
     @PostMapping("/addVeicolo")
     public Veicolo addVeicolo(@RequestBody Veicolo nuovoVeicolo) {
@@ -64,6 +74,21 @@ public class AdminController {
     @DeleteMapping("deleteOrdine/{id}")
     public ResponseEntity<String> deleteOrdine(Long id) {
         return adminServiceOrdine.deleteOrdineAcquisto(id);
+    }
+
+    @PostMapping("/creaNoleggio/{id}")
+    public Noleggio createNoleggio(@PathVariable Long id) {
+        return adminServicesNoleggio.createNoleggioUtente(id);
+    }
+
+    @PatchMapping("/modificaNoleggio/{id}")
+    public Noleggio modNoleggio(@RequestBody Noleggio noleggio, @PathVariable Long id) {
+        return adminServicesNoleggio.patchNoleggio(id, noleggio.getDataInizio(), noleggio.getDataFine(), noleggio.getCostoGiornaliero(), noleggio.getCostoTotale(),noleggio.isPagato(),noleggio.isNoleggiato());
+    }
+
+    @DeleteMapping("deleteNoleggio/{id}")
+    public ResponseEntity<String> deleteNoleggio(Long id) {
+        return adminServicesNoleggio.deleteNoleggio(id);
     }
 
 
