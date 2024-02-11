@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/concessionaria
     username: root
-    password: Avenged7x123
+    password: Anno1404!
 
   jpa:
     database: mysql
