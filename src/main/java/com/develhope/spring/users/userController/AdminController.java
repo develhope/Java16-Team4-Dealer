@@ -4,7 +4,9 @@ import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.users.entity.Utente;
+import com.develhope.spring.users.repository.UtenteRepo;
 import com.develhope.spring.users.service.AdminServiceOrdine;
+import com.develhope.spring.users.service.AdminServiceUsers;
 import com.develhope.spring.users.service.AdminServiceVeicolo;
 import com.develhope.spring.users.service.AdminServicesNoleggio;
 import com.develhope.spring.veichles.entity.Veicolo;
@@ -26,6 +28,10 @@ public class AdminController {
     private AdminServiceOrdine adminServiceOrdine;
     @Autowired
     Utente utente;
+    @Autowired
+    UtenteRepo utenteRepo;
+    @Autowired
+    AdminServiceUsers adminServiceUsers;
 
     @Autowired
     Noleggio noleggio;
@@ -91,5 +97,24 @@ public class AdminController {
         return adminServicesNoleggio.deleteNoleggio(id);
     }
 
+    @PatchMapping("/modificaUtente/{id}")
+    public ResponseEntity<String> modUtente (@PathVariable Long id){
+        try {
+            utenteRepo.deleteById(id);
+            return ResponseEntity.ok("utente modificato con successo");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del utente");
+        }
+    }
+
+    @DeleteMapping("/modificaUtente/{id}")
+    public ResponseEntity<String> deleteUtente (@PathVariable Long id){
+        try {
+            utenteRepo.deleteById(id);
+            return ResponseEntity.ok("utente rimosso con successo");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante la modifica del utente");
+        }
+    }
 
 }
