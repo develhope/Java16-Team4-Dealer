@@ -3,10 +3,12 @@ package com.develhope.spring.veichles.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 @Component
 @Entity
@@ -14,7 +16,7 @@ import java.time.OffsetDateTime;
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class Veicolo {
 
     @Id
@@ -50,8 +52,14 @@ public class Veicolo {
     private String alimentazione;
 
     @Column(name = "prezzo", nullable = false)
-    private double prezzo;
+    private BigDecimal prezzo;
+
+    @Column(name = "usato", nullable = false)
+    private boolean usato;
 
     @Column(name = "sconto", nullable = false)
     private double sconto;
+
+    @Column(name = "accessori")
+    private String accessori;
 }
