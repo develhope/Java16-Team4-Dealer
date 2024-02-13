@@ -5,9 +5,9 @@ import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.users.repository.UtenteRepo;
+import com.develhope.spring.users.service.AdminService;
 import com.develhope.spring.users.service.AdminServiceOrdine;
 import com.develhope.spring.users.service.AdminServiceUsers;
-import com.develhope.spring.users.service.AdminServiceVeicolo;
 import com.develhope.spring.users.service.AdminServicesNoleggio;
 import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     @Autowired
-    private AdminServiceVeicolo adminServiceVeicolo;
-    @Autowired
-    VeicoloRepo veicoloRepo;
+    private AdminService adminService;
     @Autowired
     private AdminServiceOrdine adminServiceOrdine;
     @Autowired
@@ -42,13 +40,13 @@ public class AdminController {
 
     @PostMapping("/addVeicolo")
     public Veicolo addVeicolo(@RequestBody Veicolo nuovoVeicolo) {
-        return adminServiceVeicolo.addVeicolo(nuovoVeicolo);
+        return adminService.createVeicolo(nuovoVeicolo);
 
     }
 
     @PatchMapping("/modVeicolo/{id}")
-    public ResponseEntity<Veicolo> modVeicolo(@RequestBody Veicolo veicoloModificato) {
-        Veicolo veicoloAggiornato = adminServiceVeicolo.modVeicolo(veicoloModificato.getId(), veicoloModificato);
+    public ResponseEntity<Veicolo> modVeicolo(@RequestBody Veicolo veicoloModificato,@PathVariable long id) {
+        Veicolo veicoloAggiornato = adminService.updateVeicolo(veicoloModificato,id);
         if (veicoloAggiornato != null && veicoloAggiornato.getId().equals(veicoloModificato.getId())) {
             return ResponseEntity.ok(veicoloAggiornato);
         } else {
@@ -57,10 +55,24 @@ public class AdminController {
     }
 
     @DeleteMapping("/deleteVeicolo/{id}")
-    public ResponseEntity<String> deleteVeicolo(Long id) {
+    public ResponseEntity<String> deleteVeicolo(@PathVariable Long id) {
         try {
-            veicoloRepo.deleteById(id);
-            return ResponseEntity.ok("Veicolo rimosso con successo");
+
+            return adminService.deleteVeicoloById(id)
+                    ? ResponseEntity.ok("Veicolo rimosso con successo")
+                    : ResponseEntity.ok("Veicolo non trovato"); // bisogna trovare il modo di non mettere 200
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
+        }
+
+    }
+    @DeleteMapping("/deleteVeicolo/")
+    public ResponseEntity<String> deleteVeicolo(@RequestBody Veicolo veicolo) {
+        try {
+
+            return adminService.deleteVeicolo(veicolo)
+                    ? ResponseEntity.ok("Veicolo rimosso con successo")
+                    : ResponseEntity.ok("Veicolo non trovato"); // bisogna trovare il modo di non mettere 200
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
         }
