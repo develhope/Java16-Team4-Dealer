@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
@@ -23,8 +24,7 @@ public class AutoService {
 
     public Veicolo getById(long id) {
         Optional<Veicolo> veicolo = this.autoRepo.findById(id);
-        if (veicolo.isEmpty()) return null;
-        return veicolo.get();
+        return veicolo.orElse(null);
     }
 
     public List<Veicolo> readAll() {
@@ -58,10 +58,13 @@ public class AutoService {
         v.setAccessori(veicolo.getAccessori());
         return v;
     }
-    public Veicolo patchVeicolo(@RequestParam Map<String,Object> veicolo, @PathVariable long id) {
+    public Veicolo patchVeicolo(@RequestBody Map<String,Object> veicolo, @PathVariable long id) {
         Veicolo veicoloDaPatchare = getById(id);
 
         applyPatch(veicoloDaPatchare,veicolo);
+
+        this.autoRepo.save(veicoloDaPatchare);
+
 
         return veicoloDaPatchare;
     }
