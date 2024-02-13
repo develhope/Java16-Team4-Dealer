@@ -33,6 +33,20 @@ public class VeicoloService {
     public List<Veicolo> readAllByType(TipoVeicolo type) {
         return autoRepo.findAll(Sort.by(type.toString()).ascending());
     }
+    public List<Veicolo> readAllByMarca(String marca) {
+        return autoRepo.findAllByMarca(marca);
+    }
+    public List<Veicolo> readAllByModello(String modello) {
+        return autoRepo.findAllByModello(modello);
+    }
+    public List<Veicolo> readAllByPrezzo(BigDecimal prezzo) {
+        return autoRepo.findAllByPrezzoOrderByPrezzoAsc(prezzo);
+    }
+
+    public List<Veicolo> findAllByRange(BigDecimal min, BigDecimal max){
+        return autoRepo.findVeicoloByRange(min,max);
+    }
+
 
     public Veicolo createVeicolo(Veicolo veicolo) {
         this.autoRepo.save(veicolo);
@@ -57,6 +71,8 @@ public class VeicoloService {
         v.setAccessori(veicolo.getAccessori());
         return v;
     }
+
+
     public Veicolo patchVeicolo(@RequestBody Map<String,Object> veicolo, @PathVariable long id) {
         Veicolo veicoloDaPatchare = getById(id);
 

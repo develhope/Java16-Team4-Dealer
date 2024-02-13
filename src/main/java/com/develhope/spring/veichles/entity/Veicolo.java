@@ -41,10 +41,10 @@ public class Veicolo {
     @Column(name = "potenza", nullable = false)
     private int potenza;
 
-    @Column(name = "tipoDiCambio", nullable = false)
+    @Column(name = "tipoDiCambio")
     private String tipoDiCambio;
 
-    @Column(name = "annoImmatricolazione", nullable = false)
+    @Column(name = "annoImmatricolazione")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private OffsetDateTime annoImmatricolazione;
 
@@ -57,7 +57,7 @@ public class Veicolo {
     @Column(name = "usato", nullable = false)
     private boolean usato;
 
-    @Column(name = "sconto", nullable = false)
+    @Column(name = "sconto")
     private double sconto;
 
     @Column(name = "accessori")
