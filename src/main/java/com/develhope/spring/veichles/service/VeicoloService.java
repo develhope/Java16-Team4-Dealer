@@ -8,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -17,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AutoService {
+public class VeicoloService {
 
     @Autowired
     private VeicoloRepo autoRepo;
@@ -116,7 +115,6 @@ public class AutoService {
                         break;
                 }
             }
-            // Altrimenti, puoi gestire il caso in cui il campo non è presente
         }
 
     public boolean deleteVeicoloById(long id){
