@@ -2,24 +2,19 @@ package com.develhope.spring.veichles.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 public class VeicoloRequest {
 
-    private String marca;
-
-    private TipoVeicolo tipoVeicolo;
-
-    private String modello;
-
-    private int cilindrata;
 
     private String colore;
-
-    private int potenza;
 
     private String tipoDiCambio;
 
@@ -29,9 +24,7 @@ public class VeicoloRequest {
 
     private BigDecimal prezzo;
 
-    private boolean usato;
-
-    private double sconto;
+    private Double sconto;
 
     private String accessori;
 }
