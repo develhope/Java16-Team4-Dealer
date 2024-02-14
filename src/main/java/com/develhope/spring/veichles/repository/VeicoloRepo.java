@@ -1,5 +1,6 @@
 package com.develhope.spring.veichles.repository;
 
+import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.TipoVeicolo;
 import com.develhope.spring.veichles.entity.Veicolo;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,9 @@ public interface VeicoloRepo extends JpaRepository <Veicolo,Long> {
     List<Veicolo> findAllByCilindrata(int cilindrata);
     List<Veicolo> findAllByColore(String colore);
     List<Veicolo> findAllByPotenza(int potenza);
+    List<Veicolo> findAllByUsato(boolean usato);
+    List<Veicolo> findAllByStatoVendita(StatoVendita statoVendita);
+    List<Veicolo> findAllOrderByStatoVenditaAsc();
     List<Veicolo> findAllByTipoDiCambio(String tipoDiCambio);
     List<Veicolo> findAllByAnnoImmatricolazione(OffsetDateTime annoImmatricolazione);
 
