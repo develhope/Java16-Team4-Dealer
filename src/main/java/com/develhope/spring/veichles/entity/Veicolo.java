@@ -62,4 +62,12 @@ public class Veicolo {
 
     @Column(name = "accessori")
     private String accessori;
+
+    @Column(name = "statoVendita")
+    private StatoVendita statoVendita;
+}
+enum StatoVendita{
+    ACQUISTABILE,
+    ORDINABILE,
+    NONdISPONIBILE
 }
