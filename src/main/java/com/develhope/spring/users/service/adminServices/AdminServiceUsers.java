@@ -1,4 +1,4 @@
-package com.develhope.spring.users.service;
+package com.develhope.spring.users.service.adminServices;
 
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.users.repository.UtenteRepo;
