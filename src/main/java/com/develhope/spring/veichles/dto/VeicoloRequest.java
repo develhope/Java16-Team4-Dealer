@@ -1,4 +1,4 @@
-package com.develhope.spring.veichles.entity;
+package com.develhope.spring.veichles.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
