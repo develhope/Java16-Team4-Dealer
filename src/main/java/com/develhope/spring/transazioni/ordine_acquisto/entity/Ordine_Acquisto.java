@@ -1,9 +1,6 @@
 package com.develhope.spring.transazioni.ordine_acquisto.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +22,9 @@ public class Ordine_Acquisto {
     private boolean pagato;
     //private Utente customer;
     //private Utente vendor;
+    @Enumerated (EnumType.STRING)
     private StatoOrdine statoOrdine;
+
+    @Enumerated (EnumType.STRING)
     private StatoVeicolo statoVeicolo;
 }
