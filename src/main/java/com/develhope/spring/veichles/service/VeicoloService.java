@@ -53,6 +53,24 @@ public class VeicoloService {
         return veicolo;
     }
 
+    public Veicolo patchStato(long id, boolean stato){
+        Veicolo veicolo = this.autoRepo.findById(id).orElse(null);
+        if (veicolo!=null){
+            veicolo.setUsato(stato);
+            this.autoRepo.save(veicolo);
+        }
+        return veicolo;
+    }
+
+    public Veicolo patch(long id, boolean stato){
+        Veicolo veicolo = this.autoRepo.findById(id).orElse(null);
+        if (veicolo!=null){
+            veicolo.setUsato(stato);
+            this.autoRepo.save(veicolo);
+        }
+        return veicolo;
+    }
+
     public Veicolo updateVeicolo(Veicolo veicolo, long id) {
         Veicolo v = getById(id);
 
