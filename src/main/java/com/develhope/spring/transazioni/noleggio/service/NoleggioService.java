@@ -24,7 +24,8 @@ public class NoleggioService {
         if (optionalNoleggio.isPresent()) {
             return optionalNoleggio.get();
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND , "Noleggio non trovato con ID: " + id);        }
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND , "Noleggio non trovato con ID: " + id);
+        }
     }
 
     public Noleggio createNoleggio(Noleggio noleggio) {
@@ -46,6 +47,8 @@ public class NoleggioService {
 
 
     public Noleggio updateNoleggio(long id, Noleggio noleggio) {
+        Optional<Noleggio> noleggioOptional = noleggioRepo.findById(id);
+
         try {
             Noleggio existingNoleggio = findNoleggioById(id);
 
