@@ -1,4 +1,4 @@
-package com.develhope.spring.users.service;
+package com.develhope.spring.users.service.adminServices;
 
 import com.develhope.spring.veichles.entity.TipoVeicolo;
 import com.develhope.spring.veichles.entity.Veicolo;

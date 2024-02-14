@@ -1,4 +1,4 @@
-package com.develhope.spring.users.service;
+package com.develhope.spring.users.service.adminServices;
 
 import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;

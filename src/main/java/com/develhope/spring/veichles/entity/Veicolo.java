@@ -66,8 +66,3 @@ public class Veicolo {
     @Column(name = "statoVendita")
     private StatoVendita statoVendita;
 }
-enum StatoVendita{
-    ACQUISTABILE,
-    ORDINABILE,
-    NONdISPONIBILE
-}

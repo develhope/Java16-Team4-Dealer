@@ -5,12 +5,11 @@ import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.users.repository.UtenteRepo;
-import com.develhope.spring.users.service.AdminService;
-import com.develhope.spring.users.service.AdminServiceOrdine;
-import com.develhope.spring.users.service.AdminServiceUsers;
-import com.develhope.spring.users.service.AdminServicesNoleggio;
+import com.develhope.spring.users.service.adminServices.AdminService;
+import com.develhope.spring.users.service.adminServices.AdminServiceOrdine;
+import com.develhope.spring.users.service.adminServices.AdminServiceUsers;
+import com.develhope.spring.users.service.adminServices.AdminServicesNoleggio;
 import com.develhope.spring.veichles.entity.Veicolo;
-import com.develhope.spring.veichles.repository.VeicoloRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +59,7 @@ public class AdminController {
 
             return adminService.deleteVeicoloById(id)
                     ? ResponseEntity.ok("Veicolo rimosso con successo")
-                    : ResponseEntity.ok("Veicolo non trovato"); // bisogna trovare il modo di non mettere 200
+                    : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veicolo non trovato");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
         }
@@ -72,7 +71,7 @@ public class AdminController {
 
             return adminService.deleteVeicolo(veicolo)
                     ? ResponseEntity.ok("Veicolo rimosso con successo")
-                    : ResponseEntity.ok("Veicolo non trovato"); // bisogna trovare il modo di non mettere 200
+                    : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veicolo non trovato");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
         }

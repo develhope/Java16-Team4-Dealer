@@ -1,4 +1,4 @@
-package com.develhope.spring.users.service;
+package com.develhope.spring.users.service.adminServices;
 
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
