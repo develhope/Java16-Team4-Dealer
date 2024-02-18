@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/deploy
+    url: jdbc:mysql://localhost:3306/concessionaria
     username: root
-    password: afSo7q64kRvGJj
+    password: Anno1404!
 
   jpa:
     database: mysql

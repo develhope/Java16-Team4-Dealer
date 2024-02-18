@@ -25,6 +25,7 @@ public interface VeicoloRepo extends JpaRepository <Veicolo,Long> {
     List<Veicolo> findAllByPotenza(int potenza);
     List<Veicolo> findAllByUsato(boolean usato);
     List<Veicolo> findAllByStatoVendita(StatoVendita statoVendita);
+    @Query("SELECT v FROM Veicolo v ORDER BY v.statoVendita ASC ")
     List<Veicolo> findAllOrderByStatoVenditaAsc();
     List<Veicolo> findAllByTipoDiCambio(String tipoDiCambio);
     List<Veicolo> findAllByAnnoImmatricolazione(OffsetDateTime annoImmatricolazione);

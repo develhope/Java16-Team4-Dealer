@@ -12,7 +12,7 @@ public class CustomerServiceVeicolo {
     @Autowired
     VeicoloService veicoloService;
 
-    public
+    //public
 
 }
 //public List<Giocatore> searchGiocatore(String ruolo, Integer altezza) {

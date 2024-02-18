@@ -65,18 +65,18 @@ public class AdminController {
         }
 
     }
-    @DeleteMapping("/deleteVeicolo/")
-    public ResponseEntity<String> deleteVeicolo(@RequestBody Veicolo veicolo) {
-        try {
-
-            return adminService.deleteVeicolo(veicolo)
-                    ? ResponseEntity.ok("Veicolo rimosso con successo")
-                    : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veicolo non trovato");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
-        }
-
-    }
+////    @DeleteMapping("/deleteVeicolo/")
+////    public ResponseEntity<String> deleteVeicolo(@RequestBody Veicolo veicolo) {
+////        try {
+////
+////            return adminService.deleteVeicolo(veicolo)
+////                    ? ResponseEntity.ok("Veicolo rimosso con successo")
+////                    : ResponseEntity.status(HttpStatus.NOT_FOUND).body("Veicolo non trovato");
+////        } catch (Exception e) {
+////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del veicolo");
+////        }
+//
+//    }
 
     @PostMapping("/creaOrdine/{id}")
     public Ordine_Acquisto createOrdine(@PathVariable Long id) {
@@ -118,7 +118,7 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping("/modificaUtente/{id}")
+    @DeleteMapping("/deleteUtente/{id}")
     public ResponseEntity<String> deleteUtente (@PathVariable Long id){
         try {
             utenteRepo.deleteById(id);

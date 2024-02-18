@@ -1,5 +1,6 @@
 package com.develhope.spring.users.service.adminServices;
 
+import com.develhope.spring.transazioni.noleggio.service.NoleggioService;
 import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.TipoVeicolo;
 import com.develhope.spring.veichles.entity.Veicolo;
@@ -21,10 +22,8 @@ public class AdminService {
 
 
     @Autowired
-    private VeicoloService noleggioService;
-//
-//    @Autowired
-//    private UtenteService utenteService;
+    private NoleggioService noleggioService;
+
 
     public Veicolo createVeicolo (Veicolo veicolo) {
         return this.veicoloService.createVeicolo(veicolo);
