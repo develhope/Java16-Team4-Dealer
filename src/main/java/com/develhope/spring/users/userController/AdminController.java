@@ -9,6 +9,7 @@ import com.develhope.spring.users.service.adminServices.AdminService;
 import com.develhope.spring.users.service.adminServices.AdminServiceOrdine;
 import com.develhope.spring.users.service.adminServices.AdminServiceUsers;
 import com.develhope.spring.users.service.adminServices.AdminServicesNoleggio;
+import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,15 +39,21 @@ public class AdminController {
     AdminServicesNoleggio adminServicesNoleggio;
 
     @PostMapping("/addVeicolo")
-    public Veicolo addVeicolo(@RequestBody Veicolo nuovoVeicolo) {
+    public VeicoloResponse addVeicolo(@RequestBody Veicolo nuovoVeicolo) {
         return adminService.createVeicolo(nuovoVeicolo);
 
     }
 
-    @PatchMapping("/modVeicolo/{id}")
-    public ResponseEntity<Veicolo> modVeicolo(@RequestBody Veicolo veicoloModificato,@PathVariable long id) {
-        Veicolo veicoloAggiornato = adminService.updateVeicolo(veicoloModificato,id);
-        if (veicoloAggiornato != null && veicoloAggiornato.getId().equals(veicoloModificato.getId())) {
+    @GetMapping("/veicolo/{id}")
+    public VeicoloResponse getVeicolo(@PathVariable Long id){
+        return this.adminService.getVeicolo(id);
+        //return new VeicoloResponse(); per prendere il JSON pulito
+    }
+
+    @PutMapping("/modVeicolo/{id}")
+    public ResponseEntity<VeicoloResponse> modVeicolo(@RequestBody Veicolo veicoloModificato,@PathVariable Long id) {
+        VeicoloResponse veicoloAggiornato = adminService.updateVeicolo(veicoloModificato,id);
+        if (veicoloAggiornato != null ) {
             return ResponseEntity.ok(veicoloAggiornato);
         } else {
             return ResponseEntity.notFound().build();
