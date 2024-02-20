@@ -3,6 +3,7 @@ package com.develhope.spring.users.service.vendorServices;
 import ch.qos.logback.classic.Logger;
 import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoVeicolo;
 import com.develhope.spring.transazioni.ordine_acquisto.repository.Repository_OrdineAcquisto;
 import com.develhope.spring.veichles.entity.StatoVendita;
@@ -133,8 +134,20 @@ public class VendorService {
 
         return ResponseEntity.ok("Lo stato dell'ordine è stato aggiornato a: " + ordineToUpdate.getStatoOrdine().toString());
     }
-//    public List<Ordine_Acquisto> getOrdiniByStatus (){
-//        return repositoryOrdineAcquisto.findAllOrderByStatoOrdine();
-//        }
+
+    public List<Ordine_Acquisto> getOrdiniByStatus(StatoOrdine statoOrdine) {
+        if (!statoOrdine.equals(StatoOrdine.ACQUISTATO)
+                || statoOrdine.equals(StatoOrdine.CONSEGNATO)
+                || statoOrdine.equals(StatoOrdine.IN_CONSEGNA)
+                || statoOrdine.equals(StatoOrdine.ORDINATO)) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stato ordine non valido! inserisci una di queste opzioni valide: "
+                    + StatoOrdine.ACQUISTATO.toString() + "\n"
+                    + StatoOrdine.CONSEGNATO.toString() + "\n"
+                    + StatoOrdine.IN_CONSEGNA.toString() + "\n"
+                    + StatoOrdine.ORDINATO.toString() + "\n"
+            );
+        }
+        return repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine);
     }
+}
 
