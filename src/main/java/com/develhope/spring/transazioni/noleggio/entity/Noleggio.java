@@ -1,5 +1,7 @@
 package com.develhope.spring.transazioni.noleggio.entity;
 
+import com.develhope.spring.users.entity.Utente;
+import com.develhope.spring.veichles.entity.Veicolo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,8 +15,7 @@ import java.time.OffsetDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
+@Builder
 public class Noleggio {
 
     @Id
@@ -40,5 +41,10 @@ public class Noleggio {
 
     @Column(name = "noleggiato", nullable = false)
     private boolean noleggiato;
+
+    @Column(name = "Utente", nullable = false)
+    private Utente utente;
+    @Column(name = "Veicolo", nullable = false)
+    private Veicolo veicolo;
 
 }
