@@ -22,6 +22,7 @@ public class Ordine_Acquisto {
     private boolean pagato;
     //private Utente customer;
     //private Utente vendor;
+    //private Veicolo veicolo;
     @Enumerated (EnumType.STRING)
     private StatoOrdine statoOrdine;
 

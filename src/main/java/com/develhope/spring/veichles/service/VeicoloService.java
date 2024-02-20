@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -34,9 +35,7 @@ public class VeicoloService {
     }
     @SneakyThrows
     public VeicoloResponse findById(long id) {
-        Optional<Veicolo> veicolo = this.autoRepo.findById(id);
-        if (veicolo.isEmpty()) throw new  IOException("Veicolo non trovato");
-        return mapper.convertEntity(veicolo.get());
+        return mapper.convertEntity(getById(id));
     }
 
 
