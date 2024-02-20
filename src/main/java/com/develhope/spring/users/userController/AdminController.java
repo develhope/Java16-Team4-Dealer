@@ -1,5 +1,6 @@
 package com.develhope.spring.users.userController;
 
+import com.develhope.spring.transazioni.noleggio.dto.NoleggioRequest;
 import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -49,6 +52,11 @@ public class AdminController {
     public VeicoloResponse getVeicolo(@PathVariable Long id){
         return this.adminService.getVeicolo(id);
         //return new VeicoloResponse(); per prendere il JSON pulito
+    }
+
+    @GetMapping("/veicoli")
+    public List<VeicoloResponse> getAll(){
+        return this.adminService.readAll();
     }
 
     @PutMapping("/modVeicolo/{id}")
@@ -101,9 +109,9 @@ public class AdminController {
         return adminServiceOrdine.deleteOrdineAcquisto(id);
     }
 
-    @PostMapping("/creaNoleggio/{id}")
-    public Noleggio createNoleggio(@PathVariable Long id) {
-        return adminServicesNoleggio.createNoleggioUtente(id);
+    @PostMapping("/creaNoleggio")
+    public Noleggio createNoleggio(@PathVariable Long id, @RequestBody NoleggioRequest noleggioRequest) {
+        return adminServicesNoleggio.createNoleggioUtente(id,noleggioRequest);
     }
 
     @PatchMapping("/modificaNoleggio/{id}")

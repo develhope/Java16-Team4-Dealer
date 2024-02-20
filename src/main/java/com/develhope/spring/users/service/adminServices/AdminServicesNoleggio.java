@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -24,8 +25,7 @@ import java.util.Optional;
 
 @Service
 public class AdminServicesNoleggio {
-    @Autowired
-    public NoleggioRequest noleggioRequest;
+
 
     @Autowired
     NoleggioRepo noleggioRepo;
@@ -37,7 +37,7 @@ public class AdminServicesNoleggio {
     @Autowired
     UtenteRepo utenteRepo;
 
-    public Noleggio createNoleggioUtente(Long id) {
+    public Noleggio createNoleggioUtente(Long id,NoleggioRequest noleggioRequest) {
         Utente utente = utenteRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utente non trovato con ID: " + id));
         if (!utente.getTipoUtente().equals(TipoUtente.CUSTOMER)) {
