@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface Repository_OrdineAcquisto extends JpaRepository <Ordine_Acquisto, Long>{
+public interface Repository_OrdineAcquisto extends JpaRepository<Ordine_Acquisto, Long> {
 
- List<Ordine_Acquisto> findAllByStatoOrdine(StatoOrdine statoOrdine);
+    List<Ordine_Acquisto> findAllByStatoOrdine(StatoOrdine statoOrdine);
+
 }

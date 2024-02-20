@@ -15,14 +15,23 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class Ordine_Acquisto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private BigDecimal anticipo;
     private boolean pagato;
+
+    @OneToOne
     private Utente customer;
+
+    @OneToOne
     private Utente vendor;
+
+    @OneToOne
     private Veicolo veicolo;
+
     @Enumerated (EnumType.STRING)
     private StatoOrdine statoOrdine;
 
