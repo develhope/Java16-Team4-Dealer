@@ -12,4 +12,5 @@ public class CreateUtenteRequest {
     private int phoneNumber;
     private String email;
     private String password;
+    
 }
