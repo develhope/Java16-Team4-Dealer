@@ -1,6 +1,6 @@
 package com.develhope.spring.veichles.service;
 
-import com.develhope.spring.veichles.dto.VeicoloFullRequest;
+
 import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.TipoVeicolo;

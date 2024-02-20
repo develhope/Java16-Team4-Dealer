@@ -10,18 +10,15 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-
-@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class NoleggioRequest {
+@AllArgsConstructor
+@Builder
+public class NoleggioResponse {
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private OffsetDateTime dataInizio;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private OffsetDateTime dataFine;
 
     private BigDecimal costoGiornaliero;
