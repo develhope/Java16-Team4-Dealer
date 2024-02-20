@@ -36,7 +36,7 @@ public class VeicoloService {
     public VeicoloResponse findById(long id) {
         Optional<Veicolo> veicolo = this.autoRepo.findById(id);
         if (veicolo.isEmpty()) throw new  IOException("Veicolo non trovato");
-        return mapper.apply(veicolo.get());
+        return mapper.convertEntity(veicolo.get());
     }
 
 
@@ -76,21 +76,18 @@ public class VeicoloService {
         return autoRepo.findAllOrderByStatoVenditaAsc().stream().map(mapper).collect(Collectors.toList());
     }
 
-    public VeicoloResponse createVeicolo(Veicolo veicolo) {
-        this.autoRepo.save(veicolo);
-        return mapper.apply(veicolo);
+    public VeicoloResponse createVeicolo(VeicoloRequest veicoloRequest) {
+        Veicolo request =mapper.convertDTO(veicoloRequest);
+        this.autoRepo.save(request);
+        return mapper.apply(request);
     }
 
     public VeicoloResponse patchStatoUsato(long id, boolean stato) {
-        Veicolo veicolo = this.autoRepo.findById(id).orElse(null);
-        if (veicolo != null) {
-            veicolo.setUsato(stato);
-            this.autoRepo.save(veicolo);
-        }
+        Veicolo veicolo = getById(id);
         return mapper.apply(veicolo);
     }
 
-    public VeicoloResponse updateVeicolo(Veicolo veicolo, long id) {
+    public VeicoloResponse updateVeicolo(VeicoloRequest veicolo, long id) {
         Veicolo v = getById(id);
 
         v.setMarca(veicolo.getMarca());
@@ -103,7 +100,7 @@ public class VeicoloService {
         v.setAnnoImmatricolazione(veicolo.getAnnoImmatricolazione());
         v.setAlimentazione(veicolo.getAlimentazione());
         v.setPrezzo(veicolo.getPrezzo());
-        v.setUsato(veicolo.isUsato());
+        v.setUsato(veicolo.getUsato());
         v.setSconto(v.getSconto());
         v.setAccessori(veicolo.getAccessori());
         v.setStatoVendita(veicolo.getStatoVendita());
@@ -144,89 +141,22 @@ public class VeicoloService {
     }
 
     public VeicoloResponse patchStatoVenditaVeicolo(long id, StatoVendita statoVendita) {
-        Optional<Veicolo> veicoloResult = this.autoRepo.findById(id);
+        Veicolo veicoloResult = getById(id);
 
-        if (veicoloResult.isEmpty()) return null;
-
-        veicoloResult.get().setStatoVendita(statoVendita);
-        this.autoRepo.saveAndFlush(veicoloResult.get());
-        return mapper.apply(veicoloResult.get());
+        veicoloResult.setStatoVendita(statoVendita);
+        this.autoRepo.saveAndFlush(veicoloResult);
+        return mapper.apply(veicoloResult);
     }
 
     public boolean deleteVeicoloById(long id) {
         Veicolo v = getById(id);
-        if (v == null) return false;
         this.autoRepo.deleteById(id);
         return true;
     }
 
-    public boolean deleteVeicolo(Veicolo veicolo) {
-        this.autoRepo.delete(veicolo);
+    public boolean deleteVeicolo(VeicoloRequest veicoloRequest) {
+        this.autoRepo.delete(mapper.convertDTO(veicoloRequest));
         return true;
     }
-
-    //ALTERNATIVA_PATCH{
-    //    public Veicolo patchVeicolo(@RequestBody Map<String, Object> veicolo, @PathVariable long id) {
-//        Optional<Veicolo> veicoloDaPatchare = this.autoRepo.findById(id);
-//
-//        if (veicoloDaPatchare.isEmpty()) return null;
-//
-//        applyPatch(veicoloDaPatchare.get(), veicolo);
-//        this.autoRepo.save(veicoloDaPatchare.get());
-//
-//        return veicoloDaPatchare.get();
-//    }
-//
-//    private void applyPatch(Veicolo veicolo, Map<String, Object> patch) {
-//
-//        for (String fieldName : patch.keySet()) {
-//
-//            switch (fieldName) {
-//                case "marca":
-//                    veicolo.setMarca((String) patch.get(fieldName));
-//                    break;
-//                case "tipoVeicolo":
-//                    veicolo.setTipoVeicolo(TipoVeicolo.valueOf((String) patch.get(fieldName)));
-//                    break;
-//                case "modello":
-//                    veicolo.setModello((String) patch.get(fieldName));
-//                    break;
-//                case "cilindrata":
-//                    veicolo.setCilindrata((int) patch.get(fieldName));
-//                    break;
-//                case "colore":
-//                    veicolo.setColore((String) patch.get(fieldName));
-//                    break;
-//                case "potenza":
-//                    veicolo.setPotenza((int) patch.get(fieldName));
-//                    break;
-//                case "tipoDiCambio":
-//                    veicolo.setTipoDiCambio((String) patch.get(fieldName));
-//                    break;
-//                case "annoImmatricolazione":
-//                    veicolo.setAnnoImmatricolazione((OffsetDateTime) patch.get(fieldName));
-//                    break;
-//                case "alimentazione":
-//                    veicolo.setAlimentazione((String) patch.get(fieldName));
-//                    break;
-//                case "prezzo":
-//                    veicolo.setPrezzo(BigDecimal.valueOf((double) patch.get(fieldName)));
-//                    break;
-//                case "usato":
-//                    veicolo.setUsato((boolean) patch.get(fieldName));
-//                    break;
-//                case "sconto":
-//                    veicolo.setSconto((double) patch.get(fieldName));
-//                    break;
-//                case "accessori":
-//                    veicolo.setAccessori((String) patch.get(fieldName));
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    }
-    //   }
-
 
 }

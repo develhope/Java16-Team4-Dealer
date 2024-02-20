@@ -9,6 +9,7 @@ import com.develhope.spring.users.service.adminServices.AdminService;
 import com.develhope.spring.users.service.adminServices.AdminServiceOrdine;
 import com.develhope.spring.users.service.adminServices.AdminServiceUsers;
 import com.develhope.spring.users.service.adminServices.AdminServicesNoleggio;
+import com.develhope.spring.veichles.dto.VeicoloRequest;
 import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class AdminController {
     AdminServicesNoleggio adminServicesNoleggio;
 
     @PostMapping("/addVeicolo")
-    public VeicoloResponse addVeicolo(@RequestBody Veicolo nuovoVeicolo) {
-        return adminService.createVeicolo(nuovoVeicolo);
+    public VeicoloResponse addVeicolo(@RequestBody VeicoloRequest veicoloRequest) {
+        return adminService.createVeicolo(veicoloRequest);
 
     }
 
@@ -51,8 +52,8 @@ public class AdminController {
     }
 
     @PutMapping("/modVeicolo/{id}")
-    public ResponseEntity<VeicoloResponse> modVeicolo(@RequestBody Veicolo veicoloModificato,@PathVariable Long id) {
-        VeicoloResponse veicoloAggiornato = adminService.updateVeicolo(veicoloModificato,id);
+    public ResponseEntity<VeicoloResponse> modVeicolo(@RequestBody VeicoloRequest veicoloRequest, @PathVariable Long id) {
+        VeicoloResponse veicoloAggiornato = adminService.updateVeicolo(veicoloRequest,id);
         if (veicoloAggiornato != null ) {
             return ResponseEntity.ok(veicoloAggiornato);
         } else {

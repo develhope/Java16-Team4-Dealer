@@ -26,15 +26,15 @@ public class AdminService {
     private NoleggioService noleggioService;
 
 
-    public VeicoloResponse createVeicolo (@RequestBody Veicolo veicolo) {
-        return this.veicoloService.createVeicolo(veicolo);
+    public VeicoloResponse createVeicolo (@RequestBody VeicoloRequest veicoloRequest) {
+        return this.veicoloService.createVeicolo(veicoloRequest);
     }
 
     public VeicoloResponse getVeicolo (Long id){
         return this.veicoloService.findById(id);
     }
-    public VeicoloResponse updateVeicolo(Veicolo veicolo,Long id){
-        return this.veicoloService.updateVeicolo(veicolo,id);
+    public VeicoloResponse updateVeicolo(VeicoloRequest veicoloRequest,Long id){
+        return this.veicoloService.updateVeicolo(veicoloRequest,id);
     }
 
     public List<VeicoloResponse> readAllByType(TipoVeicolo tipoVeicolo){
@@ -56,8 +56,8 @@ public class AdminService {
         return this.veicoloService.deleteVeicoloById(id);
     }
 
-    public boolean deleteVeicolo(Veicolo veicolo){
-        return this.veicoloService.deleteVeicolo(veicolo);
+    public boolean deleteVeicolo(VeicoloRequest veicoloRequest){
+        return this.veicoloService.deleteVeicolo(veicoloRequest);
     }
 
 

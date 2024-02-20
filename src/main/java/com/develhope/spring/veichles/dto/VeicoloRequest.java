@@ -1,5 +1,7 @@
 package com.develhope.spring.veichles.dto;
 
+import com.develhope.spring.veichles.entity.StatoVendita;
+import com.develhope.spring.veichles.entity.TipoVeicolo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,22 +11,16 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
+@Data
 public class VeicoloRequest {
 
-
-    private String colore;
-
-    private String tipoDiCambio;
-
+    private Long id;
+    private String marca, modello, colore, tipoDiCambio, alimentazione, accessori;
+    private TipoVeicolo tipoVeicolo;
+    private Integer cilindrata, potenza;
     private OffsetDateTime annoImmatricolazione;
-
-    private String alimentazione;
-
     private BigDecimal prezzo;
-
+    private Boolean usato;
     private Double sconto;
-
-    private String accessori;
+    private StatoVendita statoVendita;
 }
