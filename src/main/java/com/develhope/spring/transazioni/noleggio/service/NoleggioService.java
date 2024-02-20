@@ -4,6 +4,7 @@ import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.noleggio.repository.NoleggioRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -39,10 +40,10 @@ public class NoleggioService {
     }
 
 
-    public String deleteNoleggio(long id) {
+    public ResponseEntity<String> deleteNoleggio(long id) {
             Noleggio existingNoleggio = findNoleggioById(id);
             noleggioRepo.delete(existingNoleggio);
-            return "Noleggio eliminato correttamente";
+            return ResponseEntity.ok("Noleggio eliminato correttamente");
     }
 
 
