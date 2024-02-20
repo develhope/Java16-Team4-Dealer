@@ -1,6 +1,7 @@
 package com.develhope.spring.users.service.adminServices;
 
 import com.develhope.spring.transazioni.noleggio.service.NoleggioService;
+import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.TipoVeicolo;
 import com.develhope.spring.veichles.entity.Veicolo;
@@ -25,26 +26,29 @@ public class AdminService {
     private NoleggioService noleggioService;
 
 
-    public Veicolo createVeicolo (Veicolo veicolo) {
-        return this.veicoloService.createVeicolo(veicolo);
+    public VeicoloResponse createVeicolo (@RequestBody VeicoloRequest veicoloRequest) {
+        return this.veicoloService.createVeicolo(veicoloRequest);
     }
 
-    public Veicolo updateVeicolo(Veicolo veicolo,long id){
-        return this.veicoloService.updateVeicolo(veicolo,id);
+    public VeicoloResponse getVeicolo (Long id){
+        return this.veicoloService.findById(id);
+    }
+    public VeicoloResponse updateVeicolo(VeicoloRequest veicoloRequest,Long id){
+        return this.veicoloService.updateVeicolo(veicoloRequest,id);
     }
 
-    public List<Veicolo> readAllByType(TipoVeicolo tipoVeicolo){
+    public List<VeicoloResponse> readAllByType(TipoVeicolo tipoVeicolo){
         return this.veicoloService.readAllByType(tipoVeicolo);
     }
 
-    public List<Veicolo> readAll(){
+    public List<VeicoloResponse> readAll(){
         return this.veicoloService.readAll();
     }
 
-    public Veicolo patchVeicolo(@RequestBody VeicoloRequest veicoloRequest,@PathVariable long id){
+    public VeicoloResponse patchVeicolo(@RequestBody VeicoloRequest veicoloRequest,@PathVariable long id){
         return this.veicoloService.patchByVeicoloRequest(id,veicoloRequest);
     }
-     public Veicolo patchStatoVenditaVeicolo(@PathVariable long id, @RequestParam StatoVendita statoVendita){
+     public VeicoloResponse patchStatoVenditaVeicolo(@PathVariable long id, @RequestParam StatoVendita statoVendita){
          return this.veicoloService.patchStatoVenditaVeicolo(id, statoVendita);
     }
 
@@ -52,8 +56,8 @@ public class AdminService {
         return this.veicoloService.deleteVeicoloById(id);
     }
 
-    public boolean deleteVeicolo(Veicolo veicolo){
-        return this.veicoloService.deleteVeicolo(veicolo);
+    public boolean deleteVeicolo(VeicoloRequest veicoloRequest){
+        return this.veicoloService.deleteVeicolo(veicoloRequest);
     }
 
 
