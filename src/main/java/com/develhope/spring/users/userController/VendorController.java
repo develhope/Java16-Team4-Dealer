@@ -1,6 +1,7 @@
 package com.develhope.spring.users.userController;
 
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
 import com.develhope.spring.users.service.vendorServices.VendorService;
 import com.develhope.spring.veichles.entity.Veicolo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,11 @@ public class VendorController {
     public ResponseEntity<String> checkOrdine(@PathVariable Long idOrdine) {
         return vendorService.checkOrdineById(idOrdine);
     }
-//    @GetMapping("/checkOrdineByStatus")
-//    public List<Ordine_Acquisto> OrdiniByStatus(){
-//        return vendorService.getOrdiniByStatus();
-//    }
+    @GetMapping("/checkOrdineByStatus/{statoOrdine}")
+    public List<Ordine_Acquisto> OrdiniByStatus(@PathVariable StatoOrdine statoOrdine){
+
+        return vendorService.getOrdiniByStatus(statoOrdine);
+    }
 
     @PostMapping("/createOrdineAcquisto/{id}")
     private ResponseEntity<String> nuovoOrdine(@PathVariable Long id, @RequestBody Ordine_Acquisto ordineAcquisto) {
