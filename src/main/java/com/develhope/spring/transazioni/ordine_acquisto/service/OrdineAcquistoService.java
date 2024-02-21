@@ -4,8 +4,13 @@ import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoModel;
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoRequest;
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoResponse;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoVeicolo;
 import com.develhope.spring.transazioni.ordine_acquisto.repository.Repository_OrdineAcquisto;
+import com.develhope.spring.users.entity.TipoUtente;
+import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.users.repository.UtenteRepo;
+import com.develhope.spring.veichles.entity.StatoVendita;
+import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,45 +35,126 @@ public class OrdineAcquistoService {
     private UtenteRepo utenteRepo;
 
     @SneakyThrows
-    private Ordine_Acquisto getById (Long id){
+    private Ordine_Acquisto getOAById(Long id) {
         Optional<Ordine_Acquisto> oA = this.repositoryOrdineAcquisto.findById(id);
         if (oA.isEmpty()) throw new IOException("Ordine o Acquisto non trovato");
         return oA.get();
     }
 
-    private Ordine_Acquisto requestToEntity (OrdineAcquistoRequest request){
+    private Ordine_Acquisto requestToEntity(OrdineAcquistoRequest request) {
         return mapper.convertModelToEnt(mapper.convertRequestToMod(request));
     }
 
-    private OrdineAcquistoResponse entityToResponse (Ordine_Acquisto entity){
+    private OrdineAcquistoResponse entityToResponse(Ordine_Acquisto entity) {
         return mapper.convertModelToResponse(mapper.convertEntToModel(entity));
     }
 
     @SneakyThrows
-    public Ordine_Acquisto findById (Long id){
-        return getById(id);
+    private Veicolo getVeicoloById(long id) {
+        Optional<Veicolo> veicolo = this.veicoloRepo.findById(id);
+        if (veicolo.isEmpty()) throw new IOException("Veicolo non trovato");
+        return veicolo.get();
     }
 
-    public OrdineAcquistoResponse createOA (OrdineAcquistoRequest request){
-        Ordine_Acquisto oa = requestToEntity(request);
-        this.repositoryOrdineAcquisto.save(oa);
-        return entityToResponse(oa);
+    @SneakyThrows
+    private Veicolo veicoloStatoOrdineCheck(Long idVeicolo, StatoVeicolo statoVeicolo) {
+        Veicolo veicolo = getVeicoloById(idVeicolo);
+
+        if (statoVeicolo == StatoVeicolo.ORDINATO && veicolo.getStatoVendita() == StatoVendita.ORDINABILE)
+            return veicolo;
+
+        if (statoVeicolo == StatoVeicolo.ACQUISTATO && veicolo.getStatoVendita() == StatoVendita.ACQUISTABILE)
+            return veicolo;
+
+        throw new IOException("Veicolo non eleggibile per la richiesta fatta");
+
     }
-/**
+
+    @SneakyThrows
+    private Utente utenteTipoUtenteCheck(Long idUtente, TipoUtente tipoUtente) {
+        Utente utente = getUtenteById(idUtente);
+        if (utente.getTipoUtente() != tipoUtente) throw new IOException("Utente non eleggibile per la richiesta fatta");
+        return utente;
+    }
+
+    @SneakyThrows
+    private Utente utenteTipoUtenteCheck(Long idUtente, TipoUtente tipoUtente, TipoUtente tipoUtente2) {
+        Utente utente = getUtenteById(idUtente);
+        if (utente.getTipoUtente() != tipoUtente
+                || utente.getTipoUtente() != tipoUtente2)
+            throw new IOException("Utente non eleggibile per la richiesta fatta");
+        return utente;
+    }
+
+    @SneakyThrows
+    private Utente getUtenteById(long id) {
+        Optional<Utente> veicolo = this.utenteRepo.findById(id);
+        if (veicolo.isEmpty()) throw new IOException("Utente non trovato");
+        return veicolo.get();
+    }
+
+    private Ordine_Acquisto buildOA(OrdineAcquistoRequest request, Utente customer, Utente vendor, Veicolo vToBuy) {
+        return Ordine_Acquisto.builder()
+                .anticipo(request.getAnticipo())
+                .pagato(request.getPagato())
+                .customer(customer)
+                .vendor(vendor)
+                .veicolo(vToBuy)
+                .statoOrdine(request.getStatoOrdine())
+                .statoVeicolo(request.getStatoVeicolo())
+                .build();
+    }
+
+    @SneakyThrows
+    public Ordine_Acquisto findById(Long id) {
+        return getOAById(id);
+    }
+
+//    public OrdineAcquistoResponse createOA(OrdineAcquistoRequest request) {
+//        Ordine_Acquisto oa = requestToEntity(request);
+//        this.repositoryOrdineAcquisto.save(oa);
+//        return entityToResponse(oa);
+//    }
+
+//    @SneakyThrows
+//    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest requestA,
+//                                                 Long idCustomer,
+//                                                 Long idVeicolo) {
+//        Veicolo vToBuy = veicoloStatoOrdineCheck(idVeicolo, StatoVendita.ACQUISTABILE);
+//        Utente customer = utenteTipoUtenteCheck(idCustomer, TipoUtente.CUSTOMER, TipoUtente.ADMIN);
+//
+//        Ordine_Acquisto acquisto = buildOA(requestA,customer,null,vToBuy);
+//        this.repositoryOrdineAcquisto.saveAndFlush(acquisto);
+//
+//        return entityToResponse(acquisto);
+//    }
+
+    @SneakyThrows
     public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest requestA,
-                                                 Long idUtente,
-                                                 Long idVeicolo){
+                                                 Long idCustomer,
+                                                 Long idVeicolo,
+                                                 Long idVendor) {
+        Veicolo vToBuy = veicoloStatoOrdineCheck(idVeicolo, requestA.getStatoVeicolo());
+        Utente customer = utenteTipoUtenteCheck(idCustomer, TipoUtente.CUSTOMER);
+        Utente vendor = null;
+        if (idVendor != null) {
+            vendor = utenteTipoUtenteCheck(idVendor, TipoUtente.VENDOR);
+        }
 
+        Ordine_Acquisto acquisto = buildOA(requestA, customer, vendor, vToBuy);
+        this.repositoryOrdineAcquisto.saveAndFlush(acquisto);
+
+        return entityToResponse(acquisto);
     }
-*/
-    public OrdineAcquistoResponse createAcquisto (OrdineAcquistoRequest request){
+
+    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest request) {
         Ordine_Acquisto oa = requestToEntity(request);
         this.repositoryOrdineAcquisto.save(oa);
         return entityToResponse(oa);
     }
 
-    public OrdineAcquistoResponse updateOA (OrdineAcquistoRequest request, Long id){
-        Ordine_Acquisto oa = getById(id);
+    public OrdineAcquistoResponse updateOA(OrdineAcquistoRequest request, Long id) {
+        Ordine_Acquisto oa = getOAById(id);
 
         oa.setAnticipo(request.getAnticipo());
         oa.setPagato(request.getPagato());
@@ -82,28 +168,28 @@ public class OrdineAcquistoService {
         return entityToResponse(oa);
     }
 
-    public OrdineAcquistoResponse patchOA (OrdineAcquistoRequest request, Long id){
-        Ordine_Acquisto oa = getById(id);
+    public OrdineAcquistoResponse patchOA(OrdineAcquistoRequest request, Long id) {
+        Ordine_Acquisto oa = getOAById(id);
 
-        if (request.getAnticipo()!=null)
+        if (request.getAnticipo() != null)
             oa.setAnticipo(request.getAnticipo());
 
-        if (request.getPagato()!=null)
+        if (request.getPagato() != null)
             oa.setPagato(request.getPagato());
 
-        if (request.getCustomer()!=null)
+        if (request.getCustomer() != null)
             oa.setCustomer(request.getCustomer());
 
-        if (request.getVendor()!=null)
+        if (request.getVendor() != null)
             oa.setVendor(request.getVendor());
 
-        if (request.getVeicolo()!=null)
+        if (request.getVeicolo() != null)
             oa.setVeicolo(request.getVeicolo());
 
-        if (request.getStatoOrdine()!=null)
+        if (request.getStatoOrdine() != null)
             oa.setStatoOrdine(request.getStatoOrdine());
 
-        if (request.getStatoVeicolo()!=null)
+        if (request.getStatoVeicolo() != null)
             oa.setStatoVeicolo(request.getStatoVeicolo());
 
         this.repositoryOrdineAcquisto.saveAndFlush(oa);
@@ -111,8 +197,8 @@ public class OrdineAcquistoService {
         return entityToResponse(oa);
     }
 
-    public boolean deleteOA (long id){
-        Ordine_Acquisto oa = getById(id);
+    public boolean deleteOA(long id) {
+        Ordine_Acquisto oa = getOAById(id);
         this.repositoryOrdineAcquisto.deleteById(id);
         return true;
     }

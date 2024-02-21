@@ -23,13 +23,11 @@ public class Ordine_Acquisto {
     private BigDecimal anticipo;
     private boolean pagato;
 
-    @OneToOne
     private Utente customer;
 
-    @OneToOne
+
     private Utente vendor;
 
-    @OneToOne
     private Veicolo veicolo;
 
     @Enumerated (EnumType.STRING)

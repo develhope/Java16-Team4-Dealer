@@ -48,8 +48,8 @@ public class AdminServicesNoleggio {
             nuovoNoleggio.setDataFine(noleggioRequest.getDataFine());
             nuovoNoleggio.setCostoGiornaliero(noleggioRequest.getCostoGiornaliero());
             nuovoNoleggio.setCostoTotale(noleggioRequest.getCostoTotale());
-            nuovoNoleggio.setPagato(noleggioRequest.isPagato());
-            nuovoNoleggio.setNoleggiato(noleggioRequest.isNoleggiato());
+            nuovoNoleggio.setPagato(noleggioRequest.getPagato());
+            nuovoNoleggio.setNoleggiato(noleggioRequest.getNoleggiato());
 
             return nuovoNoleggio;
         }
