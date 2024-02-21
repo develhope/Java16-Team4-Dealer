@@ -5,6 +5,7 @@ import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoRespon
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
 import com.develhope.spring.transazioni.ordine_acquisto.service.OrdineAcquistoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public class Controller_Ordine_Acquisto {
         return ordineAcquistoService.findAllOA();
     }
 
+    @GetMapping("/oa/verifyorderstatus/{id}")
+    public ResponseEntity<String> verifyOrderStatus(@PathVariable Long id){
+        return ordineAcquistoService.verifyOrderById(id);
+    }
     @GetMapping("/oa/allbystatus")
     public List<OrdineAcquistoResponse> findAllOAByStatus(@RequestParam StatoOrdine statoOrdine) {
         return ordineAcquistoService.findAllOAByStatoOrdine(statoOrdine);
@@ -37,7 +42,7 @@ public class Controller_Ordine_Acquisto {
         return ordineAcquistoService.findAllOAByStatoOrdineAsc();
     }
 
-    @PostMapping("/create/oa/{idcustomer}/{idveicolo}")
+    @PostMapping("oa/create/{idcustomer}/{idveicolo}")
     public OrdineAcquistoResponse createOA(
             @RequestBody OrdineAcquistoRequest requestA,
             @PathVariable Long idCustomer,
@@ -46,20 +51,26 @@ public class Controller_Ordine_Acquisto {
         return ordineAcquistoService.createOA(requestA, idCustomer, idVeicolo, idVendor);
     }
 
-    @PutMapping("/update/oa/{idoa}")
+    @PutMapping("oa/update/{idoa}")
     public OrdineAcquistoResponse putOA(
             @RequestBody OrdineAcquistoRequest request,
             @PathVariable Long id) {
         return ordineAcquistoService.updateOA(request,id);
     }
-    @PatchMapping("/patch/oa/{idoa}")
+    @PatchMapping("oa/patch/{idoa}")
     public OrdineAcquistoResponse patchOA(
             @RequestBody OrdineAcquistoRequest request,
             @PathVariable Long id) {
         return ordineAcquistoService.patchOA(request,id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PatchMapping("oa/patch/statoordine/{idoa}")
+    public ResponseEntity<String> patchStatoOrdine(
+            @PathVariable Long id,
+            @RequestParam StatoOrdine statoOrdine ){
+        return ordineAcquistoService.updateStatoOrdine(id, statoOrdine);
+    }
+    @DeleteMapping("oa/delete/{id}")
     public boolean deleteOAById(@PathVariable Long id) {
         return ordineAcquistoService.deleteOA(id);
     }
