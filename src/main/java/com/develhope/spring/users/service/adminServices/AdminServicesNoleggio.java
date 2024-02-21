@@ -55,10 +55,7 @@ public class AdminServicesNoleggio {
         }
     }
 
-    public ResponseEntity<String> deleteNoleggio(@PathVariable Long id) {
-        return noleggioService.deleteNoleggio(id);
 
-    }
 
     public Noleggio patchNoleggio(Long id, OffsetDateTime inizio, OffsetDateTime fine, BigDecimal costoGiornaliero, BigDecimal costoTotale, boolean pagato, boolean noleggiato) {
         Optional<Noleggio> optionalNoleggio = noleggioRepo.findById(id);
