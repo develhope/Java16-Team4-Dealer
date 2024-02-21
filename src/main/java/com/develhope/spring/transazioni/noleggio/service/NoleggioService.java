@@ -99,8 +99,12 @@ public class NoleggioService {
 
         if (request.getNoleggiato()!=null)
             noleggioEntity.setNoleggiato(request.getNoleggiato());
-        if (request.getUtente()!=null)
-            noleggioEntity.setUtente(request.getUtente());
+
+        if (request.getCustomer()!=null)
+            noleggioEntity.setCustomer(request.getCustomer());
+
+        if (request.getVendor()!=null)
+            noleggioEntity.setVendor(request.getVendor());
 
         this.noleggioRepo.saveAndFlush(noleggioEntity);
 
