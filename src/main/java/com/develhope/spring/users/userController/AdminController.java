@@ -119,11 +119,6 @@ public class AdminController {
         return adminServicesNoleggio.patchNoleggio(id, noleggio.getDataInizio(), noleggio.getDataFine(), noleggio.getCostoGiornaliero(), noleggio.getCostoTotale(),noleggio.isPagato(),noleggio.isNoleggiato());
     }
 
-    @DeleteMapping("deleteNoleggio/{id}")
-    public ResponseEntity<String> deleteNoleggio(Long id) {
-        return adminServicesNoleggio.deleteNoleggio(id);
-    }
-
     @PatchMapping("/modificaUtente/{id}")
     public ResponseEntity<String> modUtente (@PathVariable Long id){
         try {
