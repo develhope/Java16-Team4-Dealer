@@ -22,8 +22,8 @@ public class VeicoloController {
 
     @GetMapping("/veicolo/{id}")
     public VeicoloResponse getVeicolo(@PathVariable Long id) {
-        //return this.veicoloService.findById(id);
-        return new VeicoloResponse(); //per prendere il JSON pulito
+        return this.veicoloService.findById(id);
+       // return new VeicoloResponse(); //per prendere il JSON pulito
     }
 
     @GetMapping("/veicoli")

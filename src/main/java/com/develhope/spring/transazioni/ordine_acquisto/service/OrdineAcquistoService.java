@@ -132,7 +132,7 @@ public class OrdineAcquistoService {
     }
     @SneakyThrows
     public List<OrdineAcquistoResponse> findAllOAByStatoOrdineAsc() {
-        return this.repositoryOrdineAcquisto.findAllByStatoOrdineOrderByStatoOrdineAsc()
+        return this.repositoryOrdineAcquisto.findAllByOrderByStatoOrdineAsc()
                 .stream()
                 .map(this::entityToResponse)
                 .collect(Collectors.toList());
