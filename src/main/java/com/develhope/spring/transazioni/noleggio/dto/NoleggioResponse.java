@@ -28,6 +28,10 @@ public class NoleggioResponse {
     private Boolean pagato;
 
     private Boolean noleggiato;
-    private Utente utente;
+
+    private Utente vendor;
+
+    private Utente customer;
+
     private Veicolo veicolo;
 }

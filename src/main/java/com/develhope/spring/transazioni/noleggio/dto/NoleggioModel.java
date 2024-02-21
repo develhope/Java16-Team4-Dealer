@@ -29,10 +29,14 @@ public class NoleggioModel {
     private Boolean pagato;
 
     private Boolean noleggiato;
-    private Utente utente;
+
+    private Utente vendor;
+
+    private Utente customer;
+
     private Veicolo veicolo;
 
-    public NoleggioModel convertRequestToModel(NoleggioRequest request){
+    public NoleggioModel convertRequestToModel(NoleggioRequest request) {
         return NoleggioModel.builder()
                 .id(request.getId())
                 .dataInizio(request.getDataInizio())
@@ -41,10 +45,13 @@ public class NoleggioModel {
                 .costoTotale(request.getCostoTotale())
                 .pagato(request.getPagato())
                 .noleggiato(request.getNoleggiato())
+                .vendor(request.getVendor())
+                .customer(request.getCustomer())
                 .build();
 
     }
-    public Noleggio convertModelToEntity(NoleggioModel model){
+
+    public Noleggio convertModelToEntity(NoleggioModel model) {
         return Noleggio.builder()
                 .id(model.getId())
                 .dataInizio(model.getDataInizio())
@@ -53,27 +60,37 @@ public class NoleggioModel {
                 .costoTotale(model.getCostoTotale())
                 .pagato(model.getPagato())
                 .noleggiato(model.getNoleggiato())
+                .vendor(model.getVendor())
+                .customer(model.getCustomer())
                 .build();
     }
-    public NoleggioModel convertEntityToModel(Noleggio noleggio){
+
+    public NoleggioModel convertEntityToModel(Noleggio noleggio) {
         return NoleggioModel.builder()
-            .id(noleggio.getId())
-            .dataInizio(noleggio.getDataInizio())
-            .dataFine(noleggio.getDataFine())
-            .costoGiornaliero(noleggio.getCostoGiornaliero())
-            .costoTotale(noleggio.getCostoTotale())
-            .pagato(noleggio.isPagato())
-            .noleggiato(noleggio.isNoleggiato())
-            .build();}
-    public NoleggioResponse convertModelToResponse(NoleggioModel model){
+                .id(noleggio.getId())
+                .dataInizio(noleggio.getDataInizio())
+                .dataFine(noleggio.getDataFine())
+                .costoGiornaliero(noleggio.getCostoGiornaliero())
+                .costoTotale(noleggio.getCostoTotale())
+                .pagato(noleggio.isPagato())
+                .noleggiato(noleggio.isNoleggiato())
+                .vendor(noleggio.getVendor())
+                .customer(noleggio.getCustomer())
+                .build();
+    }
+
+    public NoleggioResponse convertModelToResponse(NoleggioModel model) {
         return NoleggioResponse.builder()
-            .id(model.getId())
-            .dataInizio(model.getDataInizio())
-            .dataFine(model.getDataFine())
-            .costoGiornaliero(model.getCostoGiornaliero())
-            .costoTotale(model.getCostoTotale())
-            .pagato(model.getPagato())
-            .noleggiato(model.getNoleggiato())
-            .build();}
+                .id(model.getId())
+                .dataInizio(model.getDataInizio())
+                .dataFine(model.getDataFine())
+                .costoGiornaliero(model.getCostoGiornaliero())
+                .costoTotale(model.getCostoTotale())
+                .pagato(model.getPagato())
+                .noleggiato(model.getNoleggiato())
+                .vendor(model.getVendor())
+                .customer(model.getCustomer())
+                .build();
+    }
 
 }
