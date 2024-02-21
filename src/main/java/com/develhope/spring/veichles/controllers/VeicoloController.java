@@ -31,7 +31,7 @@ public class VeicoloController {
         return this.veicoloService.readAll();
     }
 
-    @GetMapping("/findveicoli")
+    @GetMapping("/findveicoliByMarca")
     public ResponseEntity<List<VeicoloResponse>> findVeicoloByMarca(@PathVariable (name = "marca") String marca){
         try {
             List<VeicoloResponse> response = this.veicoloService.readAllByMarca(marca);
@@ -41,7 +41,7 @@ public class VeicoloController {
         }
     }
 
-    @GetMapping("/findveicoli")
+    @GetMapping("/findveicoliByModello")
     public ResponseEntity<List<VeicoloResponse>> findVeicoloByModello(@PathVariable (name = "modello") String modello){
         try {
             List<VeicoloResponse> response = this.veicoloService.readAllByModello(modello);
@@ -50,7 +50,7 @@ public class VeicoloController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-    @GetMapping("/findveicoli")
+    @GetMapping("/findveicoliByPrezzo")
     public ResponseEntity<List<VeicoloResponse>> findVeicoloByPrezzo(@PathVariable (name = "prezzo") BigDecimal prezzo){
         try {
             List<VeicoloResponse> response = this.veicoloService.readAllByPrezzo(prezzo);
@@ -60,7 +60,7 @@ public class VeicoloController {
         }
     }
 
-    @GetMapping("/findveicoli")
+    @GetMapping("/findveicoliByUsato")
     public ResponseEntity<List<VeicoloResponse>> findVeicoloByUsato(@PathVariable (name = "usato") boolean usato){
         try {
             List<VeicoloResponse> response = this.veicoloService.readAllByUsato(usato);
@@ -70,7 +70,7 @@ public class VeicoloController {
         }
     }
 
-    @GetMapping("/findveicoli")
+    @GetMapping("/findveicoliByStatoVendita")
     public ResponseEntity<List<VeicoloResponse>> findVeicoloByStatoVendita(@PathVariable (name = "statoVendita") StatoVendita statoVendita){
         try {
             List<VeicoloResponse> response = this.veicoloService.findAllByStatoVendita(statoVendita);
@@ -92,7 +92,7 @@ public class VeicoloController {
     }
 
 
-    @GetMapping("/findveicoli")
+    @GetMapping("/findveicoliByRange")
     public ResponseEntity<List<VeicoloResponse>> findAllByRange(
             @PathVariable (name = "min") BigDecimal min,
             @PathVariable (name = "max") BigDecimal max){
