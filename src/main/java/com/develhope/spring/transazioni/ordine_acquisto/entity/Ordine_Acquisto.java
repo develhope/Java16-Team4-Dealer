@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table
 public class Ordine_Acquisto {
 
     @Id
@@ -23,13 +24,16 @@ public class Ordine_Acquisto {
     private BigDecimal anticipo;
     private boolean pagato;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Utente customer;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
     private Utente vendor;
 
     @OneToOne
+    @JoinColumn(name = "veicolo_id")
     private Veicolo veicolo;
 
     @Enumerated (EnumType.STRING)

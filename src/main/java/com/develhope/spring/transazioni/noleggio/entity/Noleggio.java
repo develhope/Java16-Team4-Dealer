@@ -10,12 +10,13 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-@Component
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table
 public class Noleggio {
 
     @Id
@@ -42,9 +43,17 @@ public class Noleggio {
     @Column(name = "noleggiato", nullable = false)
     private boolean noleggiato;
 
-    @Column(name = "Utente", nullable = false)
-    private Utente utente;
-    @Column(name = "Veicolo", nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Utente customer;
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Utente vendor;
+
+    @ManyToOne
+    @JoinColumn(name = "veicolo_id")
     private Veicolo veicolo;
 
 }

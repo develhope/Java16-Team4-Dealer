@@ -1,5 +1,7 @@
 package com.develhope.spring.veichles.entity;
 
+import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
+
 @Component
 @Entity
 @Data
@@ -65,4 +69,11 @@ public class Veicolo {
 
     @Column(name = "statoVendita")
     private StatoVendita statoVendita;
+
+    @OneToMany
+    private List<Noleggio> noleggio;
+
+    @OneToOne
+    @JoinColumn(name = "vendita_id")
+    private Ordine_Acquisto ordini;
 }
