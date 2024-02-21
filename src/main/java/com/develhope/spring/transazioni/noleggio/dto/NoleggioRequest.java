@@ -23,14 +23,11 @@ public class NoleggioRequest {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private OffsetDateTime dataFine;
-
     private BigDecimal costoGiornaliero;
-
     private BigDecimal costoTotale;
-
     private Boolean pagato;
-
     private Boolean noleggiato;
-    private Utente utente;
+    private Utente vendor;
+    private Utente customer;
     private Veicolo veicolo;
 }
