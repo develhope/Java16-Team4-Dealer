@@ -1,5 +1,6 @@
 package com.develhope.spring.users.dto;
 
+import com.develhope.spring.users.entity.TipoUtente;
 import lombok.*;
 @Data
 @AllArgsConstructor
@@ -12,5 +13,6 @@ public class CreateUtenteRequest {
     private int phoneNumber;
     private String email;
     private String password;
+    private TipoUtente tipoUtente;
     
 }
