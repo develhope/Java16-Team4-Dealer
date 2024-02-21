@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdineAcquistoService {
@@ -110,22 +111,31 @@ public class OrdineAcquistoService {
     }
 
     @SneakyThrows
-    public Ordine_Acquisto findOAById(Long id) {
-        return getOAById(id);
+    public OrdineAcquistoResponse findOAById(Long id) {
+        return entityToResponse(getOAById(id));
     }
 
     @SneakyThrows
-    public List<Ordine_Acquisto> findAllOA() {
-        return this.repositoryOrdineAcquisto.findAll();
+    public List<OrdineAcquistoResponse> findAllOA() {
+        return this.repositoryOrdineAcquisto.findAll()
+                .stream()
+                .map(this::entityToResponse)
+                .collect(Collectors.toList());
     }
 
     @SneakyThrows
-    public List<Ordine_Acquisto> findAllOAByStatoOrdine(StatoOrdine statoOrdine) {
-        return this.repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine);
+    public List<OrdineAcquistoResponse> findAllOAByStatoOrdine(StatoOrdine statoOrdine) {
+        return this.repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine)
+                .stream()
+                .map(this::entityToResponse)
+                .collect(Collectors.toList());
     }
     @SneakyThrows
-    public List<Ordine_Acquisto> findAllOAByStatoOrdineAsc(StatoOrdine statoOrdine) {
-        return this.repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine);
+    public List<OrdineAcquistoResponse> findAllOAByStatoOrdineAsc() {
+        return this.repositoryOrdineAcquisto.findAllByOrderByStatoOrdineAsc()
+                .stream()
+                .map(this::entityToResponse)
+                .collect(Collectors.toList());
     }
 
 //    public OrdineAcquistoResponse createOA(OrdineAcquistoRequest request) {
