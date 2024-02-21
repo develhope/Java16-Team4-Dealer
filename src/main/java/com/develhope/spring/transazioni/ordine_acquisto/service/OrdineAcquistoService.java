@@ -4,6 +4,7 @@ import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoModel;
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoRequest;
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoResponse;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoVeicolo;
 import com.develhope.spring.transazioni.ordine_acquisto.repository.Repository_OrdineAcquisto;
 import com.develhope.spring.users.entity.TipoUtente;
@@ -14,9 +15,12 @@ import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -106,8 +110,22 @@ public class OrdineAcquistoService {
     }
 
     @SneakyThrows
-    public Ordine_Acquisto findById(Long id) {
+    public Ordine_Acquisto findOAById(Long id) {
         return getOAById(id);
+    }
+
+    @SneakyThrows
+    public List<Ordine_Acquisto> findAllOA() {
+        return this.repositoryOrdineAcquisto.findAll();
+    }
+
+    @SneakyThrows
+    public List<Ordine_Acquisto> findAllOAByStatoOrdine(StatoOrdine statoOrdine) {
+        return this.repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine);
+    }
+    @SneakyThrows
+    public List<Ordine_Acquisto> findAllOAByStatoOrdineAsc(StatoOrdine statoOrdine) {
+        return this.repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine);
     }
 
 //    public OrdineAcquistoResponse createOA(OrdineAcquistoRequest request) {
@@ -130,10 +148,10 @@ public class OrdineAcquistoService {
 //    }
 
     @SneakyThrows
-    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest requestA,
-                                                 Long idCustomer,
-                                                 Long idVeicolo,
-                                                 Long idVendor) {
+    public OrdineAcquistoResponse createOA(OrdineAcquistoRequest requestA,
+                                           Long idCustomer,
+                                           Long idVeicolo,
+                                           Long idVendor) {
         Veicolo vToBuy = veicoloStatoOrdineCheck(idVeicolo, requestA.getStatoVeicolo());
         Utente customer = utenteTipoUtenteCheck(idCustomer, TipoUtente.CUSTOMER);
         Utente vendor = null;
@@ -147,11 +165,11 @@ public class OrdineAcquistoService {
         return entityToResponse(acquisto);
     }
 
-    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest request) {
-        Ordine_Acquisto oa = requestToEntity(request);
-        this.repositoryOrdineAcquisto.save(oa);
-        return entityToResponse(oa);
-    }
+//    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest request) {
+//        Ordine_Acquisto oa = requestToEntity(request);
+//        this.repositoryOrdineAcquisto.save(oa);
+//        return entityToResponse(oa);
+//    }
 
     public OrdineAcquistoResponse updateOA(OrdineAcquistoRequest request, Long id) {
         Ordine_Acquisto oa = getOAById(id);
@@ -195,6 +213,39 @@ public class OrdineAcquistoService {
         this.repositoryOrdineAcquisto.saveAndFlush(oa);
 
         return entityToResponse(oa);
+    }
+
+    public ResponseEntity<String> verifyOrderById(Long id) {
+        try {
+            Ordine_Acquisto oaToVerify = getOAById(id);
+
+            switch (oaToVerify.getStatoOrdine()) {
+                case ORDINATO:
+                    return ResponseEntity.ok("il Veicolo è stato ordinato con successo");
+                case IN_CONSEGNA:
+                    return ResponseEntity.ok("il Veicolo è in consegna");
+
+                case CONSEGNATO:
+                    return ResponseEntity.ok("il Veicolo è consegnato al concessionario e pronto al ritiro");
+                case ACQUISTATO:
+                    return ResponseEntity.ok("il veicolo è stato acquistato dal cliente");
+                default:
+                    return ResponseEntity.badRequest().body("Stato ordine non riconosciuto: " + oaToVerify.getStatoOrdine());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ordine non trovato");
+        }
+    }
+
+    public ResponseEntity<String> updateStatoOrdine(Long id, StatoOrdine statoOrdine){
+        try {
+            Ordine_Acquisto oaToUpdateStatus = getOAById(id);
+            oaToUpdateStatus.setStatoOrdine(statoOrdine);
+            this.repositoryOrdineAcquisto.saveAndFlush(oaToUpdateStatus);
+            return ResponseEntity.ok("Stato ordine Cambiato con successo in: "+oaToUpdateStatus.getStatoOrdine());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ordine non trovato");
+        }
     }
 
     public boolean deleteOA(long id) {
