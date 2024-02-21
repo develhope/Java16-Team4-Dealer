@@ -18,23 +18,23 @@ public class VeicoloDTOMapper implements Function<Veicolo, VeicoloResponse> {
 
 
     public Veicolo convertDTO(VeicoloRequest veicoloRequest) {
-        return new Veicolo(
-                veicoloRequest.getId(),
-                veicoloRequest.getMarca(),
-                veicoloRequest.getTipoVeicolo(),
-                veicoloRequest.getModello(),
-                veicoloRequest.getCilindrata(),
-                veicoloRequest.getColore(),
-                veicoloRequest.getPotenza(),
-                veicoloRequest.getTipoDiCambio(),
-                veicoloRequest.getAnnoImmatricolazione(),
-                veicoloRequest.getAlimentazione(),
-                veicoloRequest.getPrezzo(),
-                veicoloRequest.getUsato(),
-                veicoloRequest.getSconto(),
-                veicoloRequest.getAccessori(),
-                veicoloRequest.getStatoVendita()
-        );
+        return Veicolo.builder()
+                .id(veicoloRequest.getId())
+                .marca(veicoloRequest.getMarca())
+                .tipoVeicolo(veicoloRequest.getTipoVeicolo())
+                .modello(veicoloRequest.getModello())
+                .cilindrata(veicoloRequest.getCilindrata())
+                .colore(veicoloRequest.getColore())
+                .potenza(veicoloRequest.getPotenza())
+                .tipoDiCambio(veicoloRequest.getTipoDiCambio())
+                .annoImmatricolazione(veicoloRequest.getAnnoImmatricolazione())
+                .alimentazione(veicoloRequest.getAlimentazione())
+                .prezzo(veicoloRequest.getPrezzo())
+                .usato(veicoloRequest.getUsato())
+                .sconto(veicoloRequest.getSconto())
+                .accessori(veicoloRequest.getAccessori())
+                .statoVendita(veicoloRequest.getStatoVendita())
+                .build();
     }
     public VeicoloResponse convertEntity(Veicolo veicolo) {
         return new VeicoloResponse(
