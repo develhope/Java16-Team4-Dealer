@@ -1,10 +1,14 @@
 package com.develhope.spring.users.entity;
 
+import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.users.dto.CreateUtenteRequest;
 import com.develhope.spring.users.dto.UtenteResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Entity
@@ -33,6 +37,19 @@ public class Utente {
     @Column(name = "TipoUtente", nullable = false)
     @Enumerated (EnumType.STRING)
     private TipoUtente tipoUtente;
+
+
+    @OneToMany(mappedBy = "customer")
+    private List<Noleggio> customerStoricoNoleggi;
+
+    @OneToMany(mappedBy = "vendor")
+    private List<Noleggio> vendorStoricoNoleggi;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Ordine_Acquisto> customerStoricoOrdiniAcquisti;
+
+    @OneToMany(mappedBy = "vendor")
+    private List<Ordine_Acquisto> vendorStoricoVendite;
 
     public static Utente convertRequest(CreateUtenteRequest request) {
         return Utente.builder()
