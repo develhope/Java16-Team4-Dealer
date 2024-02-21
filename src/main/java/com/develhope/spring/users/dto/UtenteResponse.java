@@ -1,5 +1,6 @@
 package com.develhope.spring.users.dto;
 
+import com.develhope.spring.users.entity.TipoUtente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +17,6 @@ public class UtenteResponse {
     private int phoneNumber;
     private String email;
     private String password;
+    private TipoUtente tipoUtente;
 
 }
