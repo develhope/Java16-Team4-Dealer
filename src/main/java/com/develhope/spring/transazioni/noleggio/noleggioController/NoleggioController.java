@@ -17,25 +17,28 @@ public class NoleggioController {
     @Autowired
     NoleggioService noleggioService;
 
-    @PostMapping("/nuovoNoleggio")
-    public NoleggioResponse nuovoNoleggio (@RequestBody NoleggioRequest noleggioRequest){
-        return noleggioService.createNoleggio(noleggioRequest);
+    @PostMapping("/nuovoNoleggio/{idCustomer}/{idVeicolo}")
+    public ResponseEntity<NoleggioResponse> nuovoNoleggio (@PathVariable Long idCustomer,
+                                           @PathVariable Long idVeicolo,
+                                           @RequestBody NoleggioRequest noleggioRequest,
+                                           @RequestParam (required = false) Long idVenditore){
+        return noleggioService.createNoleggio(idCustomer,idVeicolo,idVenditore,noleggioRequest);
     }
     @GetMapping("/AllNoleggio")
     public List<Noleggio> tutti_iNoleggi (){
         return noleggioService.getAll();
     }
-    @PutMapping("/UpdateNoleggio")
+    @PutMapping("/UpdateNoleggio/{idNoleggio}")
     public NoleggioResponse updateNoleggio (@PathVariable Long idNoleggio, @RequestBody NoleggioRequest request){
         return noleggioService.updateNoleggio(idNoleggio, request);
     }
-    @PatchMapping("/patchNoleggio")
+    @PatchMapping("/patchNoleggio/{idNoleggio}")
     public NoleggioResponse patchNoleggio (@PathVariable Long idNoleggio, @RequestBody NoleggioRequest request){
         return noleggioService.patchONoleggio(request,idNoleggio);
     }
 
-    @DeleteMapping("/cancellaNoleggio/{id}")
-    public ResponseEntity<String> deleteNoleggio(@PathVariable Long id) {
-        return noleggioService.deleteNoleggio(id);
+    @DeleteMapping("/cancellaNoleggio/{idNoleggio}")
+    public ResponseEntity<String> deleteNoleggio(@PathVariable Long idNoleggio) {
+        return noleggioService.deleteNoleggio(idNoleggio);
     }
 }
