@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,17 @@ public class Controller_Ordine_Acquisto {
     public ResponseEntity<String> verifyOrderStatus(@PathVariable Long id){
         return ordineAcquistoService.verifyOrderById(id);
     }
+    @GetMapping("/oa/customeroa/{id}")
+    public ResponseEntity<List<OrdineAcquistoResponse>> findAllOAById(@PathVariable Long idCustomer){
+        try {
+            return ResponseEntity.ok(ordineAcquistoService.findAllOAById(idCustomer));
+        }catch (IOException e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
+    }
+
+
     @GetMapping("/oa/allbystatus")
     public List<OrdineAcquistoResponse> findAllOAByStatus(@RequestParam StatoOrdine statoOrdine) {
         return ordineAcquistoService.findAllOAByStatoOrdine(statoOrdine);

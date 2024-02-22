@@ -14,5 +14,6 @@ public interface Repository_OrdineAcquisto extends JpaRepository<Ordine_Acquisto
 
     List<Ordine_Acquisto> findAllByStatoOrdine(StatoOrdine statoOrdine);
     List<Ordine_Acquisto> findAllByOrderByStatoOrdineAsc();
+    List<Ordine_Acquisto> findAllByCustomerIdOrderByPagatoAsc(Long id);
 
 }
