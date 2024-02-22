@@ -93,9 +93,9 @@ public class OrdineAcquistoService {
 
     @SneakyThrows
     private Utente getUtenteById(long id) {
-        Optional<Utente> veicolo = this.utenteRepo.findById(id);
-        if (veicolo.isEmpty()) throw new IOException("Utente non trovato");
-        return veicolo.get();
+        Optional<Utente> utente = this.utenteRepo.findById(id);
+        if (utente.isEmpty()) throw new IOException("Utente non trovato");
+        return utente.get();
     }
 
     private Ordine_Acquisto buildOA(OrdineAcquistoRequest request, Utente customer, Utente vendor, Veicolo vToBuy) {
@@ -129,6 +129,13 @@ public class OrdineAcquistoService {
                 .stream()
                 .map(this::entityToResponse)
                 .collect(Collectors.toList());
+    }
+
+
+    public List<OrdineAcquistoResponse> findAllOAById(Long idCustomer)throws IOException{
+        Optional<Utente> utente= this.utenteRepo.findById(idCustomer);
+        if (utente.isEmpty())throw new IOException("Utente non trovato nel db");
+        return this.repositoryOrdineAcquisto.findAllByCustomerIdOrderByPagatoAsc(idCustomer).stream().map(this::entityToResponse).collect(Collectors.toList());
     }
     @SneakyThrows
     public List<OrdineAcquistoResponse> findAllOAByStatoOrdineAsc() {
@@ -181,11 +188,12 @@ public class OrdineAcquistoService {
 //        return entityToResponse(oa);
 //    }
 
-    public OrdineAcquistoResponse updateOA(OrdineAcquistoRequest request, Long id) {
+    public OrdineAcquistoResponse updateOA(OrdineAcquistoRequest oaRequest, Long id) {
         Ordine_Acquisto oa = getOAById(id);
+        Ordine_Acquisto request = requestToEntity(oaRequest);
 
         oa.setAnticipo(request.getAnticipo());
-        oa.setPagato(request.getPagato());
+        oa.setPagato(request.isPagato());
         oa.setCustomer(request.getCustomer());
         oa.setVendor(request.getVendor());
         oa.setVeicolo(request.getVeicolo());
@@ -234,7 +242,6 @@ public class OrdineAcquistoService {
                     return ResponseEntity.ok("il Veicolo è stato ordinato con successo");
                 case IN_CONSEGNA:
                     return ResponseEntity.ok("il Veicolo è in consegna");
-
                 case CONSEGNATO:
                     return ResponseEntity.ok("il Veicolo è consegnato al concessionario e pronto al ritiro");
                 case ACQUISTATO:
