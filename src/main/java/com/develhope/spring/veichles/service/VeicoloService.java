@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,6 +34,13 @@ public class VeicoloService {
         if (veicolo.isEmpty()) throw new  IOException("Veicolo non trovato");
         return veicolo.get();
     }
+
+    private VeicoloResponse immatricola(long id) {
+        Veicolo veicolo = getById(id);
+        veicolo.setAnnoImmatricolazione(OffsetDateTime.now());
+        return mapper.apply(veicolo);
+    }
+
     @SneakyThrows
     public VeicoloResponse findById(long id) {
         return mapper.convertEntity(getById(id));
@@ -148,7 +156,11 @@ public class VeicoloService {
     }
 
     public boolean deleteVeicoloById(long id) {
-        Veicolo v = getById(id);
+        try {
+            Veicolo v = getById(id);
+        }catch (Exception  e){
+            return false;
+        }
         this.autoRepo.deleteById(id);
         return true;
     }
