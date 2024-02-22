@@ -14,7 +14,7 @@ public class UtenteResponse {
     private Long id;
     private String firstName;
     private String lastName;
-    private int phoneNumber;
+    private Integer phoneNumber;
     private String email;
     private String password;
     private TipoUtente tipoUtente;
