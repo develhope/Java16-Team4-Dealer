@@ -76,6 +76,12 @@ public class Controller_Ordine_Acquisto {
         return ordineAcquistoService.patchOA(request,id);
     }
 
+    @PatchMapping("oa/concludiordine/{idoa}/{idadmin}")
+    public OrdineAcquistoResponse concludiOrdine(@PathVariable Long idOrdine,
+                                                 @PathVariable Long idAdmin) throws IOException {
+        return ordineAcquistoService.ordineToAcquisto(idOrdine, idAdmin);
+    }
+
     @PatchMapping("oa/patch/statoordine/{idoa}")
     public ResponseEntity<String> patchStatoOrdine(
             @PathVariable Long id,

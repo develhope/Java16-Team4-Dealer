@@ -13,6 +13,7 @@ import com.develhope.spring.users.repository.UtenteRepo;
 import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
+import com.develhope.spring.veichles.service.VeicoloService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,9 @@ public class OrdineAcquistoService {
 
     @Autowired
     private VeicoloRepo veicoloRepo;
+
+    @Autowired
+    private VeicoloService veicoloService;
 
     @Autowired
     private UtenteRepo utenteRepo;
@@ -178,8 +182,25 @@ public class OrdineAcquistoService {
 
         Ordine_Acquisto acquisto = buildOA(requestA, customer, vendor, vToBuy);
         this.repositoryOrdineAcquisto.saveAndFlush(acquisto);
+        if (requestA.getPagato()) this.veicoloService.immatricola(vToBuy);
 
         return entityToResponse(acquisto);
+    }
+
+    public OrdineAcquistoResponse ordineToAcquisto(Long idOrdine,
+                                                   Long idAdmin) throws IOException {
+        try {
+            Utente admin = utenteTipoUtenteCheck(idAdmin, TipoUtente.ADMIN);
+
+            Ordine_Acquisto ordine = getOAById(idOrdine);
+            ordine.setStatoOrdine(StatoOrdine.ACQUISTATO);
+            ordine.setPagato(true);
+            ordine.setStatoVeicolo(StatoVeicolo.ACQUISTATO);
+            this.veicoloService.immatricola(ordine.getVeicolo()); //bisogna capire se cambia effettivamente il veicolo
+            return entityToResponse(repositoryOrdineAcquisto.saveAndFlush(ordine));
+        }catch (Exception e ){
+            throw new IOException("Questo utente non può effettuare questa operazione");
+        }
     }
 
 //    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest request) {
