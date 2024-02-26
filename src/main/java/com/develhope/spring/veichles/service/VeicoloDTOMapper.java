@@ -1,5 +1,6 @@
 package com.develhope.spring.veichles.service;
 
+import com.develhope.spring.veichles.dto.VeicoloLimitedResponse;
 import com.develhope.spring.veichles.dto.VeicoloRequest;
 import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.Veicolo;
@@ -55,5 +56,24 @@ public class VeicoloDTOMapper implements Function<Veicolo, VeicoloResponse> {
                 veicolo.getStatoVendita(),
                 veicolo.getNoleggio(),
                 veicolo.getOrdini());
+    }
+
+    public VeicoloLimitedResponse convertEntityToLimitedResponse(Veicolo veicolo) {
+        return new VeicoloLimitedResponse(
+                veicolo.getId(),
+                veicolo.getMarca(),
+                veicolo.getModello(),
+                veicolo.getColore(),
+                veicolo.getTipoDiCambio(),
+                veicolo.getAlimentazione(),
+                veicolo.getAccessori(),
+                veicolo.getTipoVeicolo(),
+                veicolo.getCilindrata(),
+                veicolo.getPotenza(),
+                veicolo.getAnnoImmatricolazione(),
+                veicolo.getPrezzo(),
+                veicolo.isUsato(),
+                veicolo.getSconto(),
+                veicolo.getStatoVendita());
     }
 }
