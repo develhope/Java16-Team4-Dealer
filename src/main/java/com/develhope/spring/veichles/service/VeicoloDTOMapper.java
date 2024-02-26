@@ -52,6 +52,8 @@ public class VeicoloDTOMapper implements Function<Veicolo, VeicoloResponse> {
                 veicolo.getPrezzo(),
                 veicolo.isUsato(),
                 veicolo.getSconto(),
-                veicolo.getStatoVendita());
+                veicolo.getStatoVendita(),
+                veicolo.getNoleggio(),
+                veicolo.getOrdini());
     }
 }
