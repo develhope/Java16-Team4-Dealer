@@ -57,11 +57,11 @@ public class NoleggioService {
         return optionalNoleggio.get();
     }
 
-    private Noleggio requestToEntityNoleggio(NoleggioRequest request) {
+    public Noleggio requestToEntityNoleggio(NoleggioRequest request) {
         return noleggioModel.convertModelToEntity(noleggioModel.convertRequestToModel(request));
     }
 
-    private NoleggioResponse entityToResponseNoleggio(Noleggio entity) {
+    public NoleggioResponse entityToResponseNoleggio(Noleggio entity) {
         return noleggioModel.convertModelToResponse(noleggioModel.convertEntityToModel(entity));
     }
     private Noleggio buildNoleggio(NoleggioRequest request, Utente customer, Veicolo veicolo,Utente vendor) {
@@ -155,5 +155,8 @@ public class NoleggioService {
         return entityToResponseNoleggio(noleggioEntity);
     }
 
+    public  List<Noleggio> findAllById (Long id) {
+        return noleggioRepo.findAllById(id);
+    }
 
 }
