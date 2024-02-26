@@ -50,10 +50,10 @@ public class VeicoloController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-    @GetMapping("/findveicoliByPrezzo")
-    public ResponseEntity<List<VeicoloResponse>> findVeicoloByPrezzo(@RequestParam (name = "prezzo") BigDecimal prezzo){
+    @GetMapping("/findveicoliByPrezzoMax")
+    public ResponseEntity<List<VeicoloResponse>> findVeicoloByPrezzoMax(@RequestParam (name = "prezzoMax") BigDecimal prezzoMax){
         try {
-            List<VeicoloResponse> response = this.veicoloService.readAllByPrezzo(prezzo);
+            List<VeicoloResponse> response = this.veicoloService.readAllByPrezzoMax(prezzoMax);
             return ResponseEntity.ok(response);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
