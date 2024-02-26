@@ -1,6 +1,7 @@
 package com.develhope.spring.veichles.service;
 
 
+import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.TipoVeicolo;
@@ -35,10 +36,10 @@ public class VeicoloService {
         return veicolo.get();
     }
 
-    private VeicoloResponse immatricola(long id) {
-        Veicolo veicolo = getById(id);
-        veicolo.setAnnoImmatricolazione(OffsetDateTime.now());
-        return mapper.apply(veicolo);
+    public Veicolo immatricola(Veicolo veicoloVendita) {
+        veicoloVendita.setAnnoImmatricolazione(OffsetDateTime.now());
+        veicoloVendita.setStatoVendita(StatoVendita.NONDISPONIBILE);
+        return this.autoRepo.saveAndFlush(veicoloVendita);
     }
 
     @SneakyThrows
