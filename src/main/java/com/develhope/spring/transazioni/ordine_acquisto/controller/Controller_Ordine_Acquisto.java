@@ -1,9 +1,11 @@
 package com.develhope.spring.transazioni.ordine_acquisto.controller;
 
+import com.develhope.spring.shared.Error;
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoRequest;
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoResponse;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
 import com.develhope.spring.transazioni.ordine_acquisto.service.OrdineAcquistoService;
+import io.vavr.control.Either;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ public class Controller_Ordine_Acquisto {
     private OrdineAcquistoService ordineAcquistoService;
 
     @GetMapping("/oa/{id}")
-    public OrdineAcquistoResponse findOAById(@PathVariable Long id) {
+    public Either<Error,OrdineAcquistoResponse> findOAById(@PathVariable Long id) {
         return ordineAcquistoService.findOAById(id);
     }
 
@@ -30,7 +32,7 @@ public class Controller_Ordine_Acquisto {
     }
 
     @GetMapping("/oa/verifyorderstatus/{id}")
-    public ResponseEntity<String> verifyOrderStatus(@PathVariable Long id){
+    public Either<Error,ResponseEntity<String>> verifyOrderStatus(@PathVariable Long id){
         return ordineAcquistoService.verifyOrderById(id);
     }
     @GetMapping("/oa/customeroa/{id}")
@@ -55,7 +57,7 @@ public class Controller_Ordine_Acquisto {
     }
 
     @PostMapping("oa/create/{idcustomer}/{idveicolo}")
-    public OrdineAcquistoResponse createOA(
+    public Either<Error,OrdineAcquistoResponse> createOA(
             @RequestBody OrdineAcquistoRequest requestA,
             @PathVariable Long idCustomer,
             @PathVariable Long idVeicolo,
@@ -64,32 +66,32 @@ public class Controller_Ordine_Acquisto {
     }
 
     @PutMapping("oa/update/{idoa}")
-    public OrdineAcquistoResponse putOA(
+    public Either<Error,OrdineAcquistoResponse> putOA(
             @RequestBody OrdineAcquistoRequest request,
             @PathVariable Long id) {
         return ordineAcquistoService.updateOA(request,id);
     }
     @PatchMapping("oa/patch/{idoa}")
-    public OrdineAcquistoResponse patchOA(
+    public Either<Error,OrdineAcquistoResponse> patchOA(
             @RequestBody OrdineAcquistoRequest request,
             @PathVariable Long id) {
         return ordineAcquistoService.patchOA(request,id);
     }
 
     @PatchMapping("oa/concludiordine/{idoa}/{idadmin}")
-    public OrdineAcquistoResponse concludiOrdine(@PathVariable Long idOrdine,
+    public Either<Error,OrdineAcquistoResponse> concludiOrdine(@PathVariable Long idOrdine,
                                                  @PathVariable Long idAdmin) throws IOException {
         return ordineAcquistoService.ordineToAcquisto(idOrdine, idAdmin);
     }
 
     @PatchMapping("oa/patch/statoordine/{idoa}")
-    public ResponseEntity<String> patchStatoOrdine(
+    public Either<Error,ResponseEntity<String>> patchStatoOrdine(
             @PathVariable Long id,
             @RequestParam StatoOrdine statoOrdine ){
         return ordineAcquistoService.updateStatoOrdine(id, statoOrdine);
     }
     @DeleteMapping("oa/delete/{id}")
-    public boolean deleteOAById(@PathVariable Long id) {
+    public Either<Error,Boolean> deleteOAById(@PathVariable Long id) {
         return ordineAcquistoService.deleteOA(id);
     }
 

@@ -1,8 +1,6 @@
 package com.develhope.spring.users.controller;
 
-import com.develhope.spring.feature.user.dto.CreateUserRequestV1;
-import com.develhope.spring.feature.user.dto.UserDtoV1;
-import com.develhope.spring.feature.user.dto.UserError;
+
 import com.develhope.spring.users.dto.CreateUtenteRequest;
 import com.develhope.spring.users.dto.UpdateUtenteRequest;
 import com.develhope.spring.users.dto.UtenteResponse;

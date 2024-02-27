@@ -1,4 +1,4 @@
-package com.develhope.spring.feature.logging;
+package com.develhope.spring.logging;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
