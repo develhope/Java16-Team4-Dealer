@@ -1,11 +1,9 @@
 package com.develhope.spring.transazioni.ordine_acquisto.dto;
 
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
-import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoVeicolo;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.TipoTransazione;
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.veichles.entity.Veicolo;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +24,5 @@ public class OrdineAcquistoResponse {
     private Utente vendor;
     private Veicolo veicolo;
     private StatoOrdine statoOrdine;
-    private StatoVeicolo statoVeicolo;
+    private TipoTransazione tipoTransazione;
 }

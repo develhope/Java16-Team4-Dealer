@@ -40,5 +40,5 @@ public class Ordine_Acquisto {
     private StatoOrdine statoOrdine;
 
     @Enumerated (EnumType.STRING)
-    private StatoVeicolo statoVeicolo;
+    private TipoTransazione tipoTransazione;
 }
