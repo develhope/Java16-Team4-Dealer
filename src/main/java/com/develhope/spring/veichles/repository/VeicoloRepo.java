@@ -31,7 +31,7 @@ public interface VeicoloRepo extends JpaRepository <Veicolo,Long> {
     List<Veicolo> findAllByAnnoImmatricolazione(OffsetDateTime annoImmatricolazione);
 
     List<Veicolo> findAllByAlimentazione(String alimentazione);
-    List<Veicolo> findAllByPrezzoOrderByPrezzoAsc(BigDecimal prezzo);
+    List<Veicolo> findByPrezzoLessThanOrderByPrezzoAsc(BigDecimal prezzoMax);
     List<Veicolo> findAllBySconto(BigDecimal sconto);
 
     @Query("SELECT v FROM Veicolo v WHERE v.prezzo BETWEEN :prezzoMin AND :prezzoMax ORDER BY v.prezzo ASC")

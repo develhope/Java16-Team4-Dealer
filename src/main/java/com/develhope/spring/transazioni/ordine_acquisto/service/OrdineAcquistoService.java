@@ -6,7 +6,7 @@ import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoReques
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoResponse;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
-import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoVeicolo;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.TipoTransazione;
 import com.develhope.spring.transazioni.ordine_acquisto.repository.Repository_OrdineAcquisto;
 import com.develhope.spring.users.entity.TipoUtente;
 import com.develhope.spring.users.entity.Utente;
@@ -18,7 +18,6 @@ import com.develhope.spring.veichles.service.VeicoloService;
 import io.vavr.control.Either;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -45,25 +44,28 @@ public class OrdineAcquistoService {
     @Autowired
     private UtenteRepo utenteRepo;
 
-    @SneakyThrows
+
     private Either<Error,Ordine_Acquisto> getOAById(Long id) {
         Optional<Ordine_Acquisto> oA = this.repositoryOrdineAcquisto.findById(id);
-        if (oA.isEmpty()) return Either.left(new Error(510,"Ordine o Acquisto non trovato"));
+        if (oA.isEmpty())
+            return Either.left(new Error(510,"Ordine o Acquisto non trovato"));
         return Either.right(oA.get());
     }
 
-    @SneakyThrows
+
     private Either<Error,Utente> getUtenteById(long id) {
         Optional<Utente> utente = this.utenteRepo.findById(id);
-        if (utente.isEmpty()) return Either.left(new Error(512,"Utente non trovato"));
+        if (utente.isEmpty())
+            return Either.left(new Error(512,"Utente non trovato"));
 
         return Either.right(utente.get());
     }
 
-    @SneakyThrows
+
     private Either<Error,Veicolo> getVeicoloById(long id) {
         Optional<Veicolo> veicolo = this.veicoloRepo.findById(id);
-        if (veicolo.isEmpty()) return Either.left(new Error(511,"Veicolo non trovato"));
+        if (veicolo.isEmpty())
+            return Either.left(new Error(511,"Veicolo non trovato"));
         return Either.right(veicolo.get());
     }
 
@@ -77,25 +79,27 @@ public class OrdineAcquistoService {
 
 
 
-    @SneakyThrows
-    private Either<Error,Veicolo> veicoloStatoOrdineCheck(Long idVeicolo, StatoVeicolo statoVeicolo) {
+
+    private Either<Error,Veicolo> veicoloStatoOrdineCheck(Long idVeicolo, TipoTransazione tipoTransazione) {
         Either<Error,Veicolo> veicolo = getVeicoloById(idVeicolo);
         if (veicolo.isLeft()) return  Either.left(veicolo.getLeft());
-        if (statoVeicolo == StatoVeicolo.ORDINATO && veicolo.get().getStatoVendita() == StatoVendita.ORDINABILE)
+        if (tipoTransazione == TipoTransazione.ORDINE && veicolo.get().getStatoVendita() == StatoVendita.ORDINABILE)
             return Either.right(veicolo.get());
 
-        if (statoVeicolo == StatoVeicolo.ACQUISTATO && veicolo.get().getStatoVendita() == StatoVendita.ACQUISTABILE)
+        if (tipoTransazione == TipoTransazione.ACQUISTO && veicolo.get().getStatoVendita() == StatoVendita.ACQUISTABILE)
             return Either.right(veicolo.get());
 
         return Either.left(new Error(513,"Veicolo non eleggibile per la richiesta fatta"));
 
     }
 
-    @SneakyThrows
+
     private Either<Error,Utente> utenteTipoUtenteCheck(Long idUtente, TipoUtente tipoUtente) {
         Either<Error,Utente> utente = getUtenteById(idUtente);
-        if (utente.isLeft()) return Either.left(utente.getLeft());
-        if (utente.get().getTipoUtente() != tipoUtente) return Either.left(new Error(514,"Utente non eleggibile per la richiesta fatta"));
+        if (utente.isLeft())
+            return Either.left(utente.getLeft());
+        if (utente.get().getTipoUtente() != tipoUtente)
+            return Either.left(new Error(514,"Utente non eleggibile per la richiesta fatta"));
         return Either.right(utente.get());
     }
 
@@ -118,18 +122,19 @@ public class OrdineAcquistoService {
                 .vendor(vendor)
                 .veicolo(vToBuy)
                 .statoOrdine(request.getStatoOrdine())
-                .statoVeicolo(request.getStatoVeicolo())
+                .tipoTransazione(request.getTipoTransazione())
                 .build();
     }
 
-    @SneakyThrows
+
     public Either<Error,OrdineAcquistoResponse> findOAById(Long id) {
         Either<Error,Ordine_Acquisto> oa = getOAById(id);
-        if (oa.isLeft())return Either.left(oa.getLeft());
+        if (oa.isLeft())
+            return Either.left(oa.getLeft());
         return Either.right(entityToResponse(oa.get()));
     }
 
-    @SneakyThrows
+
     public List<OrdineAcquistoResponse> findAllOA() {
         return this.repositoryOrdineAcquisto.findAll()
                 .stream()
@@ -137,7 +142,7 @@ public class OrdineAcquistoService {
                 .collect(Collectors.toList());
     }
 
-    @SneakyThrows
+
     public List<OrdineAcquistoResponse> findAllOAByStatoOrdine(StatoOrdine statoOrdine) {
         return this.repositoryOrdineAcquisto.findAllByStatoOrdine(statoOrdine)
                 .stream()
@@ -151,7 +156,7 @@ public class OrdineAcquistoService {
         if (utente.isEmpty())throw new IOException("Utente non trovato nel db");
         return this.repositoryOrdineAcquisto.findAllByCustomerIdOrderByPagatoAsc(idCustomer).stream().map(this::entityToResponse).collect(Collectors.toList());
     }
-    @SneakyThrows
+
     public List<OrdineAcquistoResponse> findAllOAByStatoOrdineAsc() {
         return this.repositoryOrdineAcquisto.findAllByOrderByStatoOrdineAsc()
                 .stream()
@@ -178,25 +183,33 @@ public class OrdineAcquistoService {
 //        return entityToResponse(acquisto);
 //    }
 
-    @SneakyThrows
+
     public Either<Error,OrdineAcquistoResponse> createOA(OrdineAcquistoRequest requestA,
                                                          Long idCustomer,
                                                          Long idVeicolo,
                                                          Long idVendor) {
-
-        Either<Error,Veicolo> vToBuy = veicoloStatoOrdineCheck(idVeicolo, requestA.getStatoVeicolo());
-        if (vToBuy.isLeft()) return Either.left(vToBuy.getLeft());
+        //TODO: per qualche motivo il vendor da null compromette il metodo anche se nullable -SISTEMARE
+        Either<Error,Veicolo> vToBuy = veicoloStatoOrdineCheck(idVeicolo, requestA.getTipoTransazione());
+        if (vToBuy.isLeft())
+            return Either.left(vToBuy.getLeft());
 
         Either<Error,Utente> customer = utenteTipoUtenteCheck(idCustomer, TipoUtente.CUSTOMER);
-        if (customer.isLeft()) return Either.left(vToBuy.getLeft());
+        if (customer.isLeft())
+            return Either.left(customer.getLeft());
 
         Either<Error,Utente> vendor = null;
         if (idVendor != null) {
             vendor = utenteTipoUtenteCheck(idVendor, TipoUtente.VENDOR);
-            if (vendor.isLeft()) return Either.left(vToBuy.getLeft());
+            System.out.println(vendor.toString());
+            if (vendor.isLeft())
+                return Either.left(vendor.getLeft());
         }
 
-        Ordine_Acquisto acquisto = buildOA(requestA, customer.get(), vendor.get(), vToBuy.get());
+//        Optional<Veicolo> vToBuy = this.veicoloRepo.findById(idVeicolo);
+//        Optional<Utente> customer = this.utenteRepo.findById(idCustomer);
+//        Optional<Utente> vendor = this.utenteRepo.findById(idVendor);
+
+        Ordine_Acquisto acquisto = buildOA(requestA, customer.get(),vendor.get(),  vToBuy.get());
         this.repositoryOrdineAcquisto.saveAndFlush(acquisto);
         if (requestA.getPagato()) this.veicoloService.immatricola(vToBuy.get());
 
@@ -212,7 +225,7 @@ public class OrdineAcquistoService {
             if (ordine.isLeft()) return Either.left(ordine.getLeft());
             ordine.get().setStatoOrdine(StatoOrdine.ACQUISTATO);
             ordine.get().setPagato(true);
-            ordine.get().setStatoVeicolo(StatoVeicolo.ACQUISTATO);
+            ordine.get().setTipoTransazione(TipoTransazione.ACQUISTO);
             this.veicoloService.immatricola(ordine.get().getVeicolo()); //bisogna capire se cambia effettivamente il veicolo
             return Either.right(entityToResponse(repositoryOrdineAcquisto.saveAndFlush(ordine.get())));
         }catch (Exception e ){
@@ -237,7 +250,7 @@ public class OrdineAcquistoService {
         oa.get().setVendor(request.getVendor());
         oa.get().setVeicolo(request.getVeicolo());
         oa.get().setStatoOrdine(request.getStatoOrdine());
-        oa.get().setStatoVeicolo(request.getStatoVeicolo());
+        oa.get().setTipoTransazione(request.getTipoTransazione());
         this.repositoryOrdineAcquisto.saveAndFlush(oa.get());
 
         return Either.right(entityToResponse(oa.get()));
@@ -265,8 +278,8 @@ public class OrdineAcquistoService {
         if (request.getStatoOrdine() != null)
             oa.get().setStatoOrdine(request.getStatoOrdine());
 
-        if (request.getStatoVeicolo() != null)
-            oa.get().setStatoVeicolo(request.getStatoVeicolo());
+        if (request.getTipoTransazione() != null)
+            oa.get().setTipoTransazione(request.getTipoTransazione());
 
         this.repositoryOrdineAcquisto.saveAndFlush(oa.get());
 

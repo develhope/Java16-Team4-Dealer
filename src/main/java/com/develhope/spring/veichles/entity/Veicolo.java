@@ -3,6 +3,7 @@ package com.develhope.spring.veichles.entity;
 import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -71,6 +72,7 @@ public class Veicolo {
     private StatoVendita statoVendita;
 
     @OneToMany
+    @JsonIgnore
     private List<Noleggio> noleggio;
 
     @OneToOne

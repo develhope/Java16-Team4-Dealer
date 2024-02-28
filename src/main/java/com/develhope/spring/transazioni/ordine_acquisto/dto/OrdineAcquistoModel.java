@@ -2,7 +2,7 @@ package com.develhope.spring.transazioni.ordine_acquisto.dto;
 
 import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
-import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoVeicolo;
+import com.develhope.spring.transazioni.ordine_acquisto.entity.TipoTransazione;
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.veichles.entity.Veicolo;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class OrdineAcquistoModel {
     private Utente vendor;
     private Veicolo veicolo;
     private StatoOrdine statoOrdine;
-    private StatoVeicolo statoVeicolo;
+    private TipoTransazione tipoTransazione;
 
 
     // REQUEST -> MODEL
@@ -39,7 +39,7 @@ public class OrdineAcquistoModel {
                 .vendor(request.getVendor())
                 .veicolo(request.getVeicolo())
                 .statoOrdine(request.getStatoOrdine())
-                .statoVeicolo(request.getStatoVeicolo())
+                .tipoTransazione(request.getTipoTransazione())
                 .build();
     }
 
@@ -54,7 +54,7 @@ public class OrdineAcquistoModel {
                 .vendor(model.getVendor())
                 .veicolo(model.getVeicolo())
                 .statoOrdine(model.getStatoOrdine())
-                .statoVeicolo(model.getStatoVeicolo())
+                .tipoTransazione(model.getTipoTransazione())
                 .build();
     }
 
@@ -69,7 +69,7 @@ public class OrdineAcquistoModel {
                 .vendor(ent.getVendor())
                 .veicolo(ent.getVeicolo())
                 .statoOrdine(ent.getStatoOrdine())
-                .statoVeicolo(ent.getStatoVeicolo())
+                .tipoTransazione(ent.getTipoTransazione())
                 .build();
     }
 
@@ -83,7 +83,7 @@ public class OrdineAcquistoModel {
                 .vendor(model.getVendor())
                 .veicolo(model.getVeicolo())
                 .statoOrdine(model.getStatoOrdine())
-                .statoVeicolo(model.getStatoVeicolo())
+                .tipoTransazione(model.getTipoTransazione())
                 .build();
     }
 

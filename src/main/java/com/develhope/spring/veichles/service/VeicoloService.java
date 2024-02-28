@@ -64,8 +64,8 @@ public class VeicoloService {
         return autoRepo.findAllByModello(modello).stream().map(mapper).collect(Collectors.toList());
     }
 
-    public List<VeicoloResponse> readAllByPrezzo(BigDecimal prezzo) {
-        return autoRepo.findAllByPrezzoOrderByPrezzoAsc(prezzo).stream().map(mapper).collect(Collectors.toList());
+    public List<VeicoloResponse> readAllByPrezzoMax(BigDecimal prezzoMax) {
+        return autoRepo.findByPrezzoLessThanOrderByPrezzoAsc(prezzoMax).stream().map(mapper).collect(Collectors.toList());
     }
 
     public List<VeicoloResponse> readAllByUsato(boolean usato) {
@@ -92,6 +92,8 @@ public class VeicoloService {
 
     public VeicoloResponse patchStatoUsato(long id, boolean stato) {
         Veicolo veicolo = getById(id);
+        veicolo.setUsato(stato);
+        autoRepo.saveAndFlush(veicolo);
         return mapper.apply(veicolo);
     }
 
@@ -120,8 +122,6 @@ public class VeicoloService {
 
     public VeicoloResponse patchByVeicoloRequest(long id, VeicoloRequest veicoloRequest) {
         Veicolo veicoloResult = getById(id);
-
-
 
         if (veicoloRequest.getColore() != null)
             veicoloResult.setColore(veicoloRequest.getColore());
