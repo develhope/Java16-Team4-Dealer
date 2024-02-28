@@ -2,11 +2,14 @@ package com.develhope.spring.transazioni.noleggio.dto;
 
 import com.develhope.spring.transazioni.noleggio.entity.Noleggio;
 import com.develhope.spring.users.entity.Utente;
+import com.develhope.spring.users.repository.UtenteRepo;
 import com.develhope.spring.veichles.entity.Veicolo;
+import com.develhope.spring.veichles.repository.VeicoloRepo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +21,11 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Builder
 public class NoleggioModel {
+
+    @Autowired
+    UtenteRepo utenteRepo;
+    @Autowired
+    VeicoloRepo veicoloRepo;
 
     private Long id;
     private OffsetDateTime dataInizio;
@@ -32,11 +40,11 @@ public class NoleggioModel {
 
     private Boolean noleggiato;
 
-    private Utente vendor;
+    private Long idVendor;
 
-    private Utente customer;
+    private Long idCustomer;
 
-    private Veicolo veicolo;
+    private Long idVeicolo;
 
     public NoleggioModel convertRequestToModel(NoleggioRequest request) {
         return NoleggioModel.builder()
@@ -47,13 +55,17 @@ public class NoleggioModel {
                 .costoTotale(request.getCostoTotale())
                 .pagato(request.getPagato())
                 .noleggiato(request.getNoleggiato())
-                .vendor(request.getVendor())
-                .customer(request.getCustomer())
+                .idCustomer(request.getIdcustomer())
+                .idVendor(request.getIdvendor())
+                .idVeicolo(request.getIdveicolo())
                 .build();
 
     }
 
     public Noleggio convertModelToEntity(NoleggioModel model) {
+        Utente customer = utenteRepo.findById(model.getIdCustomer()).orElse(null);
+        Utente vendor = utenteRepo.findById(model.getIdVendor()).orElse(null);
+        Veicolo veicolo = veicoloRepo.findById(model.getIdVeicolo()).orElse(null);
         return Noleggio.builder()
                 .id(model.getId())
                 .dataInizio(model.getDataInizio())
@@ -62,23 +74,32 @@ public class NoleggioModel {
                 .costoTotale(model.getCostoTotale())
                 .pagato(model.getPagato())
                 .noleggiato(model.getNoleggiato())
-                .vendor(model.getVendor())
-                .customer(model.getCustomer())
+                .vendor(vendor)
+                .customer(customer)
+                .veicolo(veicolo)
                 .build();
     }
 
     public NoleggioModel convertEntityToModel(Noleggio noleggio) {
-        return NoleggioModel.builder()
+
+        NoleggioModel.NoleggioModelBuilder builder = NoleggioModel.builder()
                 .id(noleggio.getId())
                 .dataInizio(noleggio.getDataInizio())
                 .dataFine(noleggio.getDataFine())
                 .costoGiornaliero(noleggio.getCostoGiornaliero())
                 .costoTotale(noleggio.getCostoTotale())
                 .pagato(noleggio.isPagato())
-                .noleggiato(noleggio.isNoleggiato())
-                .vendor(noleggio.getVendor())
-                .customer(noleggio.getCustomer())
-                .build();
+                .noleggiato(noleggio.isNoleggiato());
+        if (noleggio.getVendor() != null) {
+            builder().idVendor(noleggio.getVendor().getId());
+        }
+        if (noleggio.getCustomer() != null){
+            builder().idCustomer(noleggio.getCustomer().getId());
+        }
+        if (noleggio.getVeicolo() != null){
+            builder().idVeicolo(noleggio.getVeicolo().getId());
+        }
+        return builder().build();
     }
 
     public NoleggioResponse convertModelToResponse(NoleggioModel model) {
@@ -90,8 +111,9 @@ public class NoleggioModel {
                 .costoTotale(model.getCostoTotale())
                 .pagato(model.getPagato())
                 .noleggiato(model.getNoleggiato())
-                .vendor(model.getVendor())
-                .customer(model.getCustomer())
+                .idVendor(model.getIdVendor())
+                .idCustomer(model.getIdCustomer())
+                .idVeicolo(model.getIdVeicolo())
                 .build();
     }
 

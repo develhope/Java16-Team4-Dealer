@@ -29,9 +29,9 @@ public class NoleggioResponse {
 
     private Boolean noleggiato;
 
-    private Utente vendor;
+    private Long idVendor;
 
-    private Utente customer;
+    private Long idCustomer;
 
-    private Veicolo veicolo;
+    private Long idVeicolo;
 }

@@ -72,12 +72,15 @@ public class NoleggioService {
                 .costoTotale(request.getCostoTotale())
                 .pagato(request.getPagato())
                 .noleggiato(request.getNoleggiato())
+                .customer(customer)
+                .vendor(vendor)
+                .veicolo(veicolo)
                 .build();
 
     }
 
     public ResponseEntity<NoleggioResponse> createNoleggio( Long idCliente, Long idVeicolo, Long idVenditore, NoleggioRequest request) {
-        Utente customer = utenteTipoUtenteCheck(idVenditore, TipoUtente.CUSTOMER);
+        Utente customer = utenteTipoUtenteCheck(idCliente, TipoUtente.CUSTOMER);
         Optional<Veicolo> veicolo = veicoloRepo.findById(idVeicolo);
         if (veicolo.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -105,6 +108,9 @@ public class NoleggioService {
     
     public NoleggioResponse updateNoleggio(long id, NoleggioRequest request) {
         Noleggio noleggioEntity = getById(id);
+        Utente customer = utenteRepo.findById(request.getIdcustomer()).orElse(null);
+        Utente vendor = utenteRepo.findById(request.getIdvendor()).orElse(null);
+        Veicolo veicolo = veicoloRepo.findById(request.getIdveicolo()).orElse(null);
 
         noleggioEntity.setDataInizio(request.getDataInizio());
         noleggioEntity.setDataFine(request.getDataFine());
@@ -112,9 +118,9 @@ public class NoleggioService {
         noleggioEntity.setCostoTotale(request.getCostoTotale());
         noleggioEntity.setPagato(request.getPagato());
         noleggioEntity.setNoleggiato(request.getNoleggiato());
-        noleggioEntity.setCustomer(request.getCustomer());
-        noleggioEntity.setVendor(request.getVendor());
-        noleggioEntity.setVeicolo(request.getVeicolo());
+        noleggioEntity.setCustomer(customer);
+        noleggioEntity.setVendor(vendor);
+        noleggioEntity.setVeicolo(veicolo);
 
         this.noleggioRepo.save(noleggioEntity);
 
@@ -122,6 +128,9 @@ public class NoleggioService {
     }
     public NoleggioResponse patchONoleggio (NoleggioRequest request, Long id){
         Noleggio noleggioEntity = getById(id);
+        Veicolo veicolo = veicoloRepo.findById(request.getIdveicolo()).orElse(null);
+        Utente vendor = utenteRepo.findById(request.getIdvendor()).orElse(null);
+        Utente customer = utenteRepo.findById(request.getIdcustomer()).orElse(null);
 
         if (request.getDataInizio()!=null)
             noleggioEntity.setDataInizio(request.getDataInizio());
@@ -135,8 +144,8 @@ public class NoleggioService {
         if (request.getCostoTotale()!=null)
             noleggioEntity.setCostoTotale(request.getCostoTotale());
 
-        if (request.getVeicolo()!=null)
-            noleggioEntity.setVeicolo(request.getVeicolo());
+        if (request.getIdveicolo()!=null)
+            noleggioEntity.setVeicolo(veicolo);
 
         if (request.getPagato()!=null)
             noleggioEntity.setPagato(request.getPagato());
@@ -144,11 +153,11 @@ public class NoleggioService {
         if (request.getNoleggiato()!=null)
             noleggioEntity.setNoleggiato(request.getNoleggiato());
 
-        if (request.getCustomer()!=null)
-            noleggioEntity.setCustomer(request.getCustomer());
+        if (request.getIdcustomer()!=null)
+            noleggioEntity.setCustomer(customer);
 
-        if (request.getVendor()!=null)
-            noleggioEntity.setVendor(request.getVendor());
+        if (request.getIdvendor()!=null)
+            noleggioEntity.setVendor(vendor);
 
         this.noleggioRepo.saveAndFlush(noleggioEntity);
 
