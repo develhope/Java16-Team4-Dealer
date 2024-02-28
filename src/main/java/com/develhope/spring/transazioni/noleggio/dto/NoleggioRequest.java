@@ -27,7 +27,7 @@ public class NoleggioRequest {
     private BigDecimal costoTotale;
     private Boolean pagato;
     private Boolean noleggiato;
-    private Utente vendor;
-    private Utente customer;
-    private Veicolo veicolo;
+    private Long idvendor;
+    private Long idcustomer;
+    private Long idveicolo;
 }

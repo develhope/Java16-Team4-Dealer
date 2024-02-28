@@ -17,11 +17,11 @@ public class NoleggioController {
     @Autowired
     NoleggioService noleggioService;
 
-    @PostMapping("/nuovoNoleggio/{idCustomer}/{idVeicolo}")
-    public ResponseEntity<NoleggioResponse> nuovoNoleggio (@PathVariable Long idCustomer,
+    @PostMapping("/nuovoNoleggio/{idCustomer}/{idVeicolo}/{idVenditore}")
+    public ResponseEntity<NoleggioResponse> nuovoNoleggio (                                                                                                                               @PathVariable Long idCustomer,
                                            @PathVariable Long idVeicolo,
                                            @RequestBody NoleggioRequest noleggioRequest,
-                                           @RequestParam (required = false) Long idVenditore){
+                                           @PathVariable (required = false) Long idVenditore){
         return noleggioService.createNoleggio(idCustomer,idVeicolo,idVenditore,noleggioRequest);
     }
     @GetMapping("/AllNoleggio")
