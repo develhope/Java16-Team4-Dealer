@@ -1,6 +1,7 @@
 package com.develhope.spring.veichles.controllers;
 
 
+import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.veichles.dto.VeicoloRequest;
 import com.develhope.spring.veichles.dto.VeicoloResponse;
 import com.develhope.spring.veichles.entity.StatoVendita;
@@ -8,6 +9,7 @@ import com.develhope.spring.veichles.service.VeicoloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -116,13 +118,9 @@ public class VeicoloController {
         }
     }
 
-
-
-
-
-
     @PostMapping("/addVeicolo")
-    public VeicoloResponse addVeicolo(@RequestBody VeicoloRequest veicoloRequest) {
+    public VeicoloResponse addVeicolo(@AuthenticationPrincipal Utente user, @RequestBody VeicoloRequest veicoloRequest) {
+        System.out.println(user);
         return veicoloService.createVeicolo(veicoloRequest);
 
     }
