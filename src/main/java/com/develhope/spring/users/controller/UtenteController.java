@@ -72,8 +72,10 @@ public class UtenteController {
     @Operation(summary = "Elimina un utente", description = "Elimina un utente specifico in base al suo ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utente eliminato correttamente"),
-            @ApiResponse(responseCode = "404", description = "Utente non trovato"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "404", description = "Controller non trovato"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
+            @ApiResponse(responseCode = "512", description = "Utente non trovato")
+
     })
     @DeleteMapping(path = "/delete/{userId}")
     public ResponseEntity<String> deletAUser(@PathVariable Long id) {
@@ -90,8 +92,10 @@ public class UtenteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utente aggiornato correttamente"),
             @ApiResponse(responseCode = "400", description = "Bad Request - Richiesta non valida"),
-            @ApiResponse(responseCode = "404", description = "Utente non trovato"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "404", description = "Controller non trovato"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
+            @ApiResponse(responseCode = "512", description = "Utente non trovato")
+
     })
     @PutMapping(path = "/Fullupdate/{id}")
     public ResponseEntity<String> fullUpdateUtente(@PathVariable Long id, @RequestBody UpdateUtenteRequest request) {
@@ -108,8 +112,10 @@ public class UtenteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Utente modificato correttamente"),
             @ApiResponse(responseCode = "400", description = "Bad Request - Richiesta non valida"),
-            @ApiResponse(responseCode = "404", description = "Utente non trovato"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            @ApiResponse(responseCode = "404", description = "Controller non trovato"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
+            @ApiResponse(responseCode = "512", description = "Utente non trovato")
+
     })
     @PatchMapping(path = "/update/{id}")
     public ResponseEntity<String> updateUtente(@PathVariable Long id, @RequestBody UpdateUtenteRequest request) {
