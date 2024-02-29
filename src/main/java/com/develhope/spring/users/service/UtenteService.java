@@ -124,11 +124,11 @@ public class UtenteService {
     }
 
 
-    public List<OrdineAcquistoResponse> getOrdineAcquistoByIdUtente(Long idUtente) throws IOException {
-
-        return ordineAcquistoService.findAllOAById(idUtente);
-
-    }
+//    public List<OrdineAcquistoResponse> getOrdineAcquistoByIdUtente(Long idUtente) throws IOException {
+//
+//        return ordineAcquistoService.findAllOAById(idUtente);
+//
+//    }
 
     public TipoUtente checkTipoUtente (Long id){
         return  getById(id).getTipoUtente();

@@ -151,10 +151,10 @@ public class OrdineAcquistoService {
     }
 
 
-    public List<OrdineAcquistoResponse> findAllOAById(Long idCustomer)throws IOException{
-        Optional<Utente> utente= this.utenteRepo.findById(idCustomer);
-        if (utente.isEmpty())throw new IOException("Utente non trovato nel db");
-        return this.repositoryOrdineAcquisto.findAllByCustomerIdOrderByPagatoAsc(idCustomer).stream().map(this::entityToResponse).collect(Collectors.toList());
+    public Either<Error,List<OrdineAcquistoResponse>> findAllOAById(Long idCustomer){
+        Either <Error, Utente> utente = getUtenteById(idCustomer);
+        if (utente.isLeft()) return Either.left(utente.getLeft());
+        return Either.right(this.repositoryOrdineAcquisto.findAllByCustomerIdOrderByPagatoAsc(idCustomer).stream().map(this::entityToResponse).collect(Collectors.toList()));
     }
 
     public List<OrdineAcquistoResponse> findAllOAByStatoOrdineAsc() {
@@ -164,31 +164,11 @@ public class OrdineAcquistoService {
                 .collect(Collectors.toList());
     }
 
-//    public OrdineAcquistoResponse createOA(OrdineAcquistoRequest request) {
-//        Ordine_Acquisto oa = requestToEntity(request);
-//        this.repositoryOrdineAcquisto.save(oa);
-//        return entityToResponse(oa);
-//    }
-
-//    @SneakyThrows
-//    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest requestA,
-//                                                 Long idCustomer,
-//                                                 Long idVeicolo) {
-//        Veicolo vToBuy = veicoloStatoOrdineCheck(idVeicolo, StatoVendita.ACQUISTABILE);
-//        Utente customer = utenteTipoUtenteCheck(idCustomer, TipoUtente.CUSTOMER, TipoUtente.ADMIN);
-//
-//        Ordine_Acquisto acquisto = buildOA(requestA,customer,null,vToBuy);
-//        this.repositoryOrdineAcquisto.saveAndFlush(acquisto);
-//
-//        return entityToResponse(acquisto);
-//    }
-
-
     public Either<Error,OrdineAcquistoResponse> createOA(OrdineAcquistoRequest requestA,
                                                          Long idCustomer,
                                                          Long idVeicolo,
                                                          Long idVendor) {
-        //TODO: per qualche motivo il vendor da null compromette il metodo anche se nullable -SISTEMARE
+
         Either<Error,Veicolo> vToBuy = veicoloStatoOrdineCheck(idVeicolo, requestA.getTipoTransazione());
         if (vToBuy.isLeft())
             return Either.left(vToBuy.getLeft());
@@ -197,19 +177,18 @@ public class OrdineAcquistoService {
         if (customer.isLeft())
             return Either.left(customer.getLeft());
 
-        Either<Error,Utente> vendor = null;
+        Ordine_Acquisto acquisto;
+
         if (idVendor != null) {
-            vendor = utenteTipoUtenteCheck(idVendor, TipoUtente.VENDOR);
+            Either<Error, Utente> vendor = utenteTipoUtenteCheck(idVendor, TipoUtente.VENDOR);
             System.out.println(vendor.toString());
             if (vendor.isLeft())
                 return Either.left(vendor.getLeft());
+            acquisto = buildOA(requestA, customer.get(), vendor.get(), vToBuy.get());
+        } else {
+             acquisto = buildOA(requestA, customer.get(), null, vToBuy.get());
         }
 
-//        Optional<Veicolo> vToBuy = this.veicoloRepo.findById(idVeicolo);
-//        Optional<Utente> customer = this.utenteRepo.findById(idCustomer);
-//        Optional<Utente> vendor = this.utenteRepo.findById(idVendor);
-
-        Ordine_Acquisto acquisto = buildOA(requestA, customer.get(),vendor.get(),  vToBuy.get());
         this.repositoryOrdineAcquisto.saveAndFlush(acquisto);
         if (requestA.getPagato()) this.veicoloService.immatricola(vToBuy.get());
 
@@ -233,11 +212,6 @@ public class OrdineAcquistoService {
         }
     }
 
-//    public OrdineAcquistoResponse createAcquisto(OrdineAcquistoRequest request) {
-//        Ordine_Acquisto oa = requestToEntity(request);
-//        this.repositoryOrdineAcquisto.save(oa);
-//        return entityToResponse(oa);
-//    }
 
     public Either<Error,OrdineAcquistoResponse> updateOA(OrdineAcquistoRequest oaRequest, Long id) {
         Either<Error,Ordine_Acquisto> oa = getOAById(id);
@@ -286,21 +260,24 @@ public class OrdineAcquistoService {
         return Either.right(entityToResponse(oa.get()));
     }
 
-    public Either<Error,ResponseEntity<String>> verifyOrderById(Long id) {
+    public Either<Error,String> verifyOrderById(Long id) {
             Either<Error,Ordine_Acquisto> oaToVerify = getOAById(id);
             if (oaToVerify.isLeft()) return Either.left(oaToVerify.getLeft());
 
+            if (oaToVerify.get().getStatoOrdine()==null)
+                return Either.left(new Error(515,"Stato ordine non riconosciuto: " + oaToVerify.get().getStatoOrdine()));
+
             switch (oaToVerify.get().getStatoOrdine()) {
                 case ORDINATO:
-                    return Either.right(ResponseEntity.ok().body("il Veicolo è stato ordinato con successo"));
+                    return Either.right("il Veicolo è stato ordinato con successo");
                 case IN_CONSEGNA:
-                    return Either.right(ResponseEntity.ok().body("il Veicolo è in consegna"));
+                    return Either.right("il Veicolo è in consegna");
                 case CONSEGNATO:
-                    return Either.right(ResponseEntity.ok().body("il Veicolo è consegnato al concessionario e pronto al ritiro"));
+                    return Either.right("il Veicolo è consegnato al concessionario e pronto al ritiro");
                 case ACQUISTATO:
-                    return Either.right(ResponseEntity.ok().body("il veicolo è stato acquistato dal cliente"));
+                    return Either.right("il veicolo è stato acquistato dal cliente");
                 default:
-                    return Either.right(ResponseEntity.ok().body("Stato ordine non riconosciuto: " + oaToVerify.get().getStatoOrdine()));
+                    return Either.left(new Error(515,"Stato ordine non riconosciuto: " + oaToVerify.get().getStatoOrdine()));
             }
     }
 
