@@ -19,6 +19,9 @@ import com.develhope.spring.veichles.service.VeicoloService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -124,6 +127,15 @@ public class UtenteService {
     }
 
 
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+
+            public UserDetails loadUserByUsername(String username) {
+                return utenteRepo.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            }
+        };
+    }
 //    public List<OrdineAcquistoResponse> getOrdineAcquistoByIdUtente(Long idUtente) throws IOException {
 //
 //        return ordineAcquistoService.findAllOAById(idUtente);
