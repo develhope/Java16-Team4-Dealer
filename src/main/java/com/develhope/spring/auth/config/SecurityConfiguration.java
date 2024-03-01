@@ -30,7 +30,21 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 //rotte di login signup aperte a tutti
                 //TODO: cambiare le rotte
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated())
+
+                .authorizeHttpRequests(request -> request.requestMatchers("/h2-console/**",
+                        "/swagger-ui/**",
+                         "/csrf",
+                        "/v2/api-docs/**",
+                        "/swagger-ui/**",
+                        "/configuration/ui/**",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**",
+                        "/console/**",
+                        "/account/**",
+                        "/api/v1/auth/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 //settiamo l'authentication provider (jwt filter)
                 .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
