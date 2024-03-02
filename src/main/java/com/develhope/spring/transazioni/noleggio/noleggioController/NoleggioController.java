@@ -26,6 +26,7 @@ public class NoleggioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "noleggio creato con successo"),
             @ApiResponse(responseCode = "400", description = "bad request"),
+            @ApiResponse(responseCode = "422", description = "il Veicolo non è Noleggiabile"),
             @ApiResponse(responseCode = "500", description = "internal Error")
     })
     @PostMapping("/nuovoNoleggio/{idCustomer}/{idVeicolo}/{idVenditore}")

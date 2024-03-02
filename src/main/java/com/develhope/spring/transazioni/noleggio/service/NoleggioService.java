@@ -12,6 +12,7 @@ import com.develhope.spring.transazioni.ordine_acquisto.entity.Ordine_Acquisto;
 import com.develhope.spring.users.entity.TipoUtente;
 import com.develhope.spring.users.entity.Utente;
 import com.develhope.spring.users.repository.UtenteRepo;
+import com.develhope.spring.veichles.entity.StatoVendita;
 import com.develhope.spring.veichles.entity.Veicolo;
 import com.develhope.spring.veichles.repository.VeicoloRepo;
 import io.vavr.control.Either;
@@ -80,12 +81,13 @@ public class NoleggioService {
 
     }
 
-    public ResponseEntity<NoleggioResponse> createNoleggio( Long idCliente, Long idVeicolo, Long idVenditore, NoleggioRequest request) {
+    public ResponseEntity<NoleggioResponse> createNoleggio(Long idCliente, Long idVeicolo, Long idVenditore, NoleggioRequest request) {
         Utente customer = utenteTipoUtenteCheck(idCliente, TipoUtente.CUSTOMER);
         Optional<Veicolo> veicolo = veicoloRepo.findById(idVeicolo);
         if (veicolo.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        if (veicolo.get().getStatoVendita()!= StatoVendita.NOLEGGIABILE ) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
         Utente venditore = null;
         if (idVenditore != null){
             venditore= utenteTipoUtenteCheck(idVenditore, TipoUtente.VENDOR);
