@@ -5,6 +5,8 @@ import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoReques
 import com.develhope.spring.transazioni.ordine_acquisto.dto.OrdineAcquistoResponse;
 import com.develhope.spring.transazioni.ordine_acquisto.entity.StatoOrdine;
 import com.develhope.spring.transazioni.ordine_acquisto.service.OrdineAcquistoService;
+import com.develhope.spring.users.entity.TipoUtente;
+import com.develhope.spring.users.entity.Utente;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -12,6 +14,7 @@ import io.vavr.control.Either;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -205,6 +208,7 @@ public class Controller_Ordine_Acquisto {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ordine/Acquisto recuperato correttamente"),
             @ApiResponse(responseCode = "400", description = "Bad Request - Richiesta non valida"),
+            @ApiResponse(responseCode = "403", description = "Non hai l'autorizzazione per procedere"),
             @ApiResponse(responseCode = "404", description = "Controller non trovato"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
             @ApiResponse(responseCode = "510", description = "Ordine o Acquisto non trovato"),
@@ -214,8 +218,12 @@ public class Controller_Ordine_Acquisto {
             @ApiResponse(responseCode = "514", description = "Utente non eleggibile per la richiesta fatta")
     })
     @PatchMapping("oa/concludiordine/{idOrdine}/{idAdmin}")
-    public ResponseEntity<?> concludiOrdine(@PathVariable Long idOrdine,
-                                                 @PathVariable Long idAdmin) throws IOException {
+    public ResponseEntity<?> concludiOrdine(@AuthenticationPrincipal Utente user,
+                                            @PathVariable Long idOrdine,
+                                            @PathVariable Long idAdmin) throws IOException {
+        if (user.getTipoUtente()== TipoUtente.CUSTOMER){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Non hai l'autorizzazione per procedere");
+        }
         Either<Error,OrdineAcquistoResponse> request = ordineAcquistoService.ordineToAcquisto(idOrdine, idAdmin);
         if (request.isLeft()) {
             return ResponseEntity.status(request.getLeft().getCode()).body(request.getLeft().getMessage());
@@ -235,8 +243,12 @@ public class Controller_Ordine_Acquisto {
 
     @PatchMapping("oa/patch/statoordine/{idoa}")
     public ResponseEntity<?> patchStatoOrdine(
+            @AuthenticationPrincipal Utente user,
             @PathVariable Long idoa,
             @RequestParam StatoOrdine statoOrdine ){
+        if (user.getTipoUtente()== TipoUtente.CUSTOMER){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Non hai l'autorizzazione per procedere");
+        }
 
         Either<Error,ResponseEntity<String>> request = ordineAcquistoService.updateStatoOrdine(idoa, statoOrdine);
         if (request.isLeft()) {
